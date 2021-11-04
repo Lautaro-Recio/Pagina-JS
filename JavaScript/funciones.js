@@ -44,6 +44,7 @@ function generar (Array){
     for (const producto of Array) {
         let fila = document.createElement("div");
         fila.setAttribute("class", "col-md-3 col-xs-5 caja");
+        fila.setAttribute("id", "cajas");
         fila.innerHTML = `
             <img class="imgProds" src="${producto.imgs}" alt="${producto.prod}" class="prods">
             <p class="nombreProd">${producto.prod}</p>
@@ -56,7 +57,20 @@ function generar (Array){
     }
 }
 
-/* Funcion de Agregar al carrito */
+/!BOTONES DE CATEGORIAS!/
+function botones (elemento){
+    let boton = productos.slice(0,4)
+    for (const producto of boton){
+        let div=document.createElement("div");
+        div.setAttribute("class", "col-md-3 col-xs-5");
+        div.setAttribute("id", "cajas");
+        //plantillas literales
+        div.innerHTML = `<button class="categorias aniBoton"  onclick=cates(${JSON.stringify(producto.categorias)})>${(producto.categorias)}</button>`;
+        document.getElementById("categorias").appendChild(div)
+    }   
+}
+botones()
+
 function filas(elemento){
     //crear las filas con sus celdas
     let fila = document.createElement("tr");
@@ -117,32 +131,51 @@ function vaciarCarrito(){
 }
 
 
-let agregar = document.getElementById("zapatillas")
+/* let agregar = document.getElementById("Zapatillas")
 console.log(agregar)
-agregar.addEventListener("click",cates)
+agregar.onclick(cates) */
 
-function cates () {
-    switch (agregar){
-        case bolsos :{
-            console.log("bolsos");
-            break;
-        }
-        case zapatillas:{
-            console.log("zapatillas");
-            let zapatillas = productos.filter(function(cats) {
-                return cats.categorias === "zapatillas";
-                
+function cates (cat) {
+    console.log(cat)
+    switch (cat){
+        case "Zapatillas" :{
+            let tarjetas= document.getElementById("tarjetas")
+            tarjetas.innerHTML=``
+            let Zapatillas = productos.filter(function(cats) {
+                return cats.categorias === "Zapatillas";
             })
-            console.log(zapatillas)
-            generar(zapatillas)
+            generar(Zapatillas)
             break;
         }
-        case accesorios :{
-            console.log("accesorios");
+        case "Bolsos" :{
+            let tarjetas= document.getElementById("tarjetas")
+            tarjetas.innerHTML=``
+            let Bolsos = productos.filter(function(cats) {
+                return cats.categorias === "Bolsos";
+            })
+            generar(Bolsos)
             break;
         }
-        case pelotas :{
-            console.log("pelotas");
+        case "Accesorios" :{
+            let tarjetas= document.getElementById("tarjetas")
+            tarjetas.innerHTML=``
+            let Accesorios = productos.filter(function(cats) {
+                return cats.categorias === "Accesorios";
+            })
+            generar(Accesorios)
+            break;
+        }
+        case "Pelotas" :{
+            let tarjetas= document.getElementById("tarjetas")
+            tarjetas.innerHTML=``
+            let Pelotas = productos.filter(function(cats) {
+                return cats.categorias === "Pelotas";
+            })
+            generar(Pelotas)
+            break;
+        }
+        default :{
+            console.log("ERROR")
             break;
         }
     }

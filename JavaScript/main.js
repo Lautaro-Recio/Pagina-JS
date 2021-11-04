@@ -32,5 +32,6 @@ let tr = document.createElement("tr");
 
 /*mostrar tarjeta de producto */
 generar(productos)
+
 /* Eventos */
 
