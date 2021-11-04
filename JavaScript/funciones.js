@@ -73,7 +73,7 @@ function botones (elemento){
         div.setAttribute("class", "col-md-3 col-xs-5");
         div.setAttribute("id", "cajas");
         //plantillas literales
-        div.innerHTML = `<button class="categorias aniBoton"  onclick=cates(${JSON.stringify(producto.categorias)})>${(producto.categorias)}</button>`;
+        div.innerHTML = `<button class="categorias animate__animated aniBoton animate__pulse"  onclick=cates(${JSON.stringify(producto.categorias)})>${(producto.categorias)}</button>`;
         document.getElementById("categorias").appendChild(div)
     }   
 }
