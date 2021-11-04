@@ -9,7 +9,7 @@ let primerEntrega = 0;
 let montoEnCuotas; 
 const listaFinal=[];
 let prodSelecc;
-let carrito = [];
+var carrito = [];
 console.log(carrito)
 /* Fin de Variables */
 /* FUNCIONES */   
@@ -30,23 +30,7 @@ tabla.setAttribute("id", "tabla");
 let tablaBody = document.createElement("tbody");
 let tr = document.createElement("tr");
 
-/* Entrega: Generar HTML/mostrar tarjeta de producto */
-
-for (const producto of productos) {
-    let fila = document.createElement("div");
-    fila.setAttribute("class", "col-md-3 col-xs-5 caja");
-    fila.innerHTML = `
-        <img class="imgProds" src="${producto.imgs}" alt="${producto.prod}" class="prods">
-        <p class="nombreProd">${producto.prod}</p>
-        <b><p class="precio">$${producto.precio}</p></b>
-        <button id="addToCart" class="agregar aniBoton" onclick='addToCart(${JSON.stringify(producto)})'>Comprar</button>
-        </button>    
-    `;
-    tabla.appendChild(fila);
-   document.getElementById("tarjetas").appendChild(fila);
-}
-
-/* Borrar */
-
+/*mostrar tarjeta de producto */
+generar(productos)
 /* Eventos */
 

@@ -38,6 +38,24 @@ function pagoEnCuotas(){
     }
 }
 
+/! Generacion de tablas !/
+function generar (Array){
+
+    for (const producto of Array) {
+        let fila = document.createElement("div");
+        fila.setAttribute("class", "col-md-3 col-xs-5 caja");
+        fila.innerHTML = `
+            <img class="imgProds" src="${producto.imgs}" alt="${producto.prod}" class="prods">
+            <p class="nombreProd">${producto.prod}</p>
+            <b><p class="precio">$${producto.precio}</p></b>
+            <button id="addToCart" class="agregar aniBoton" onclick='addToCart(${JSON.stringify(producto)})'>Comprar</button>
+            </button>    
+        `;
+        tabla.appendChild(fila);
+    document.getElementById("tarjetas").appendChild(fila);
+    }
+}
+
 /* Funcion de Agregar al carrito */
 function filas(elemento){
     //crear las filas con sus celdas
@@ -111,6 +129,12 @@ function cates () {
         }
         case zapatillas:{
             console.log("zapatillas");
+            let zapatillas = productos.filter(function(cats) {
+                return cats.categorias === "zapatillas";
+                
+            })
+            console.log(zapatillas)
+            generar(zapatillas)
             break;
         }
         case accesorios :{
