@@ -23,12 +23,7 @@ console.log(carrito)
 let borrar = document.getElementById("borrar")
 borrar.addEventListener("click",vaciarCarrito)
 
-//tabla con DOM
-let tabla = document.createElement("table");
-tabla.setAttribute("class", "table table-striped");
-tabla.setAttribute("id", "tabla");
-let tablaBody = document.createElement("tbody");
-let tr = document.createElement("tr");
+
 
 /*mostrar tarjeta de producto */
 generar(productos)

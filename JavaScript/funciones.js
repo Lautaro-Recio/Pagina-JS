@@ -38,6 +38,14 @@ function pagoEnCuotas(){
     }
 }
 
+
+/! tabla con DOM !/
+let tabla = document.createElement("table");
+tabla.setAttribute("class", "table table-striped");
+tabla.setAttribute("id", "tabla");
+let tablaBody = document.createElement("tbody");
+let tr = document.createElement("tr");
+
 /! Generacion de tablas !/
 function generar (Array){
 
@@ -74,14 +82,14 @@ botones()
 function filas(elemento){
     //crear las filas con sus celdas
     let fila = document.createElement("tr");
-    fila.setAttribute("id","trTabla"+1)
+    fila.setAttribute("id",elemento.prod)
     //plantillas literales
     fila.innerHTML = `<td class="elementoTablas"> ID=${elemento.id}</td>
     <td><img class="compras" src=${elemento.imgs}></td>
     <td class="elementoTablas">${elemento.prod}</td>
     <td class="elementoTablas"><b>$ ${elemento.precio}</b></td>
     <td class="elementoTablas"><input type="number" id="multiplicador"></input></td>
-    <td class="elementoTablas"><button id="borrar" class="agregar ">x</button></td>`;
+    <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(elemento.categorias)})>x</button></td>`;
     tablaBody.appendChild(fila);
     tabla.appendChild(tablaBody);
     document.getElementById("carro").appendChild(tabla);
@@ -98,13 +106,7 @@ function calcular(){
 }
 /* Fin Funcion */
 
-function eliminar(){
-    let tabla = document.getElementById("trTabla");
-    console.log(tabla)
-    tabla.parentNode.removeChild(trTabla)
-    precioCuotas=(precioCuotas-productos.precio)
-    total.innerHTML= `Total: $${precioCuotas}`
-} 
+
 
 /* Agregar al carrito */
 const addToCart = (producto) => {
@@ -115,26 +117,38 @@ const addToCart = (producto) => {
     precioCuotas=(precioCuotas+producto.precio)
     console.log(precioCuotas)
     total.innerHTML= `Total: $${precioCuotas}`
-
-    let sacar = document.getElementById("borrar");
-    sacar.addEventListener("click", eliminar)
+    
+  
 }
+
+/* ELIMINAR */
+
+function eliminar(eliminado){
+    console.log(eliminado)
+    let tabla = document.getElementById(eliminado);
+    console.log(tabla)
+    tabla.parentNode.removeChild(eliminado)
+    precioCuotas=(precioCuotas-productos.precio)
+    total.innerHTML= `Total: $${precioCuotas}`
+}   
+
 
 /* Vaciar carrito */
 function vaciarCarrito(){
-    let tabla=document.getElementById("tabla")
-    tabla.parentNode.removeChild(tabla)
-    total.innerHTML= `Total: $ `
+    let tabla=document.getElementById("tabla");
+    tabla.parentNode.removeChild(tabla);
+    total.innerHTML= `Total: $ `;
     carrito=[];
     console.log(carrito);
     localStorage.clear( );
+    tabla.innerHTML=` `;
+    tablaBody.innerHTML=` `;
+    console.log(tabla.innerHTML);
+    precioCuotas=0
+
 }
 
-
-/* let agregar = document.getElementById("Zapatillas")
-console.log(agregar)
-agregar.onclick(cates) */
-
+/* CATEGORIAS */
 function cates (cat) {
     console.log(cat)
     switch (cat){
@@ -157,7 +171,7 @@ function cates (cat) {
             break;
         }
         case "Accesorios" :{
-            let tarjetas= document.getElementById("tarjetas")
+            let tarjetas= document.getElementById("")
             tarjetas.innerHTML=``
             let Accesorios = productos.filter(function(cats) {
                 return cats.categorias === "Accesorios";
