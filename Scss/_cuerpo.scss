@@ -1,0 +1,46 @@
+/* cards de productos */
+.prods{
+    margin: 4% 14%;
+}
+.caja{
+    box-shadow: 0 0px 15px 10px rgba(0, 0, 0, 0.5);
+    margin: 20px 40px;
+    background-color: white;
+    height: 100%;
+}
+.nombreProd{
+    margin: 5px 0px;
+    font-size: 18px;
+    border-bottom: solid 2px rgba(0, 0, 0, 0.5);
+}
+.precio{
+    font-size: 21px;
+   
+}
+.container{
+    padding-top: 50px;
+}
+.centrar{
+text-align: center;
+}
+.espacio{
+    justify-content: space-between;
+}
+.imgProds{
+    width: 100%;
+    height: 80%;
+    
+
+}
+.imgCarrousel{
+    width: 100%;
+    height: 500px;
+    padding: 3% 10% 1% 10%;
+}
+.borde{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border:rgb(100, 100, 100) 5px solid;
+    border-radius: 15px;
+    background-color: white;
+}

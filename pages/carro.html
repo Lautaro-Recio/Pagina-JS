@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carrito de compras</title>
+
+    <!-- Link a bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- Link al css -->
+    <link rel="stylesheet" href="../Css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <!-- NavBar -->
+                <nav class="navbar navbar-light fixed-top">
+                    <div class="container-fluid">
+                      <form class="d-flex mx-auto">
+                        <a href="../index.html"><img class="logo mx-auto"src="../assets/images/logo.png" alt="logo"></a>
+                        <input id="datos" class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
+                        <button class="boton" onclick="obtenerDatos()"><img src="../assets/images/lupa.png" alt=""></button>
+                      </form>
+                    <div class="mx-auto">
+                      <button class="navbar-toggler mx-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <span class="navbar-toggler-icon"></span>
+                      </button>
+                      <button class="carro">
+                        <img class="carrito" src="../assets/images/carrito.png" alt="carrito de compras">
+                      </button>
+                    </div>
+                      <!-- offcanvas-start cambia para que la nav aparezca por la izquierda -->
+                      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                        <div class="offcanvas-header">
+                          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                              <a class="links" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="links" href="#">Link</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                              <a class="links dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Dropdown
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+                                  <li>
+                                    <a class="links" href="#">Action</a>
+                                  </li>
+                                  <li>
+                                    <a class="links" href="#">Another action</a>
+                                  </li>
+                                  <li>
+                                    <a class="links" href="#">Another action</a></li>
+                                  </li>
+                                  <li>
+                                    <a class="links" href="#">Something else here</a>
+                                  </li>
+                                </ul>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </nav>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-xs-12 compras" id="carro">
+          
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <footer class="">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3 col-xs-12">
+              <img class="logo" src="../assets/images/logo.png" alt="Logo">
+            </div>
+            <div class="col-md-9 col-xs-12">
+              <img class="redes" src="../assets/images/instagram.png" alt="Logo">
+              <img class="redes" src="../assets/images/linkedin.png" alt="Logo">
+              <img class="redes" src="../assets/images/whatsapp.png" alt="Logo">
+            </div>
+          </div>
+        </div>
+    </footer>
+    
+    <!-- Script boostrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <!-- Script de JS /lo saque para ver la estetica de la pag/-->
+    <script src="../JavaScript/main.js"></script>
+</body>
+</html>

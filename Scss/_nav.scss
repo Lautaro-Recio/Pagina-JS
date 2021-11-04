@@ -1,0 +1,56 @@
+.navbar{
+    background-color: $nav
+}
+
+.boton{
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 4%;
+    height: 40px;
+    width: 7%;
+}
+
+.offcanvas-body, .offcanvas-header{
+    background-color: $nav;
+}
+
+.links{
+    color: white;
+    text-decoration: none;
+}
+h5{
+    color: white;
+}
+p{
+    text-align: center;
+}
+.navbar-toggler{
+    background-color: $amarillo;
+}
+.carro{
+    background-color: $nav;
+    width: 60px;
+    height: 50px;
+    margin: 0px 15px;
+}
+.carrito{
+    width: 50px;
+    height: 50px;
+}
+
+.logo1{
+    width: 130px;
+    height: 100px;
+    margin-top: 50px;
+}
+.form-control {
+    width: 600px;
+    height: 40px;
+    margin-top: 4%;
+}
+.dropdown-menu{
+    background-color: $nav;
+}
+.subtitulo{
+    font-size: 21px;
+}

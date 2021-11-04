@@ -1,0 +1,26 @@
+{
+  "name": "rootcursojs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-css": "node-sass --include-path scss scss/estilo.scss css/style.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lautaro-Recio/Pagina-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lautaro-Recio/Pagina-js/issues"
+  },
+  "homepage": "https://github.com/Lautaro-Recio/Pagina-js#readme",
+  "devDependencies": {
+    "node-sass": "^6.0.1",
+    "nodemon": "^2.0.14"
+  },
+  "dependencies": {},
+  "description": ""
+}
