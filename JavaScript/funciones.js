@@ -86,6 +86,7 @@
         tr = document.createElement("tr");
         tr.setAttribute("id",elemento.prod)
         //plantillas literales
+<<<<<<< HEAD
         tr.innerHTML = `<td class="elementoTablas"> ID=${elemento.id}</td>
         <td><img class="compras" src=${elemento.imgs}></td>
         <td class="elementoTablas">${elemento.prod}</td>
@@ -123,6 +124,126 @@
             }else{
                 console.log("chau")
             };
+=======
+        div.innerHTML = `<button class="categorias animate__animated aniBoton animate__pulse"  onclick=cates(${JSON.stringify(producto.categorias)})>${(producto.categorias)}</button>`;
+        document.getElementById("categorias").appendChild(div)
+    }   
+}
+botones()
+
+function filas(elemento){
+    //crear las filas con sus celdas
+    let fila = document.createElement("tr");
+    fila.setAttribute("id",elemento.prod)
+    //plantillas literales
+    fila.innerHTML = `<td class="elementoTablas"> ID=${elemento.id}</td>
+    <td><img class="compras" src=${elemento.imgs}></td>
+    <td class="elementoTablas">${elemento.prod}</td>
+    <td class="elementoTablas"><b>$ ${elemento.precio}</b></td>
+    <td class="elementoTablas"><input type="number" id="multiplicador"></input></td>
+    <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(elemento.categorias)})>x</button></td>`;
+    tablaBody.appendChild(fila);
+    tabla.appendChild(tablaBody);
+    document.getElementById("carro").appendChild(tabla);
+}
+/* Fin Funcion */
+
+/* Fin Funciones */
+
+/* Agregar al carrito */
+function calcular(){
+    let multiplicador = document.getElementById("multiplicador").value;
+    let total = (multiplicador*producto.precio);
+    console.log(total)
+}
+/* Fin Funcion */
+
+
+
+/* Agregar al carrito */
+const addToCart = (producto) => {
+    carrito.push(producto)
+    console.log(carrito)
+    localStorage.setItem("cart", JSON.stringify(carrito))
+    filas(producto)
+    precioCuotas=(precioCuotas+producto.precio)
+    console.log(precioCuotas)
+    total.innerHTML= `Total: $${precioCuotas}`
+    
+  
+}
+
+/* ELIMINAR */
+
+function eliminar(eliminado){
+    console.log(eliminado)
+    let tabla = document.getElementById(eliminado);
+    console.log(tabla)
+    tabla.parentNode.removeChild(eliminado)
+    precioCuotas=(precioCuotas-productos.precio)
+    total.innerHTML= `Total: $${precioCuotas}`
+}   
+
+
+/* Vaciar carrito */
+function vaciarCarrito(){
+    let tabla=document.getElementById("tabla");
+    tabla.parentNode.removeChild(tabla);
+    total.innerHTML= `Total: $ `;
+    carrito=[];
+    console.log(carrito);
+    localStorage.clear( );
+    tabla.innerHTML=` `;
+    tablaBody.innerHTML=` `;
+    console.log(tabla.innerHTML);
+    precioCuotas=0
+
+}
+
+/* CATEGORIAS */
+function cates (cat) {
+    console.log(cat)
+    switch (cat){
+        case "Zapatillas" :{
+            let tarjetas= document.getElementById("tarjetas")
+            tarjetas.innerHTML=``
+            let Zapatillas = productos.filter(function(cats) {
+                return cats.categorias === "Zapatillas";
+            })
+            generar(Zapatillas)
+            break;
+        }
+        case "Bolsos" :{
+            let tarjetas= document.getElementById("tarjetas")
+            tarjetas.innerHTML=``
+            let Bolsos = productos.filter(function(cats) {
+                return cats.categorias === "Bolsos";
+            })
+            generar(Bolsos)
+            break;
+        }
+        case "Accesorios" :{
+            let tarjetas= document.getElementById("")
+            tarjetas.innerHTML=``
+            let Accesorios = productos.filter(function(cats) {
+                return cats.categorias === "Accesorios";
+            })
+            generar(Accesorios)
+            break;
+        }
+        case "Pelotas" :{
+            let tarjetas= document.getElementById("tarjetas")
+            tarjetas.innerHTML=``
+            let Pelotas = productos.filter(function(cats) {
+                return cats.categorias === "Pelotas";
+            })
+            generar(Pelotas)
+            break;
+        }
+        default :{
+            console.log("ERROR")
+            break;
+>>>>>>> 555d8322dd7f5a869f06ce552f08cecbf229d664
         }
        
         
