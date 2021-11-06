@@ -24,6 +24,7 @@ body{
     border-radius: 15px;
     background-color: #ffde59;
     border:5px solid $nav;
+    font-weight: bolder;
 }
 .cates{
     background-color: #1f1f1f;
@@ -31,4 +32,11 @@ body{
     padding-bottom: 25px;
     margin-bottom: 50px;
     font-size: 20px;
+    
+}
+.botonCarro{
+    width: 40%;
+    height: 50px;
+    border-radius: 30px;
+    margin: 5% 30% 5% 30%;
 }

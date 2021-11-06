@@ -130,6 +130,12 @@ h4 {
   color: #1f1f1f;
   text-align: center; }
 
+.total {
+  margin-top: 5%;
+  font-size: 21px;
+  font-weight: bolder;
+  color: darkgreen; }
+
 .aniBoton:hover {
   animation-name: "boton";
   animation-iteration-count: infinite;
@@ -179,7 +185,8 @@ body {
   height: 70%;
   border-radius: 15px;
   background-color: #ffde59;
-  border: 5px solid #1f1f1f; }
+  border: 5px solid #1f1f1f;
+  font-weight: bolder; }
 
 .cates {
   background-color: #1f1f1f;
@@ -187,3 +194,9 @@ body {
   padding-bottom: 25px;
   margin-bottom: 50px;
   font-size: 20px; }
+
+.botonCarro {
+  width: 40%;
+  height: 50px;
+  border-radius: 30px;
+  margin: 5% 30% 5% 30%; }
