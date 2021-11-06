@@ -78,15 +78,12 @@
             document.getElementById("categorias").appendChild(div)
         }   
     }
-    /* Generacion de botones */
-    botones()
 
     function filas(elemento){
         //crear las filas con sus celdas
         tr = document.createElement("tr");
         tr.setAttribute("id",elemento.prod)
         //plantillas literales
-<<<<<<< HEAD
         tr.innerHTML = `<td class="elementoTablas"> ID=${elemento.id}</td>
         <td><img class="compras" src=${elemento.imgs}></td>
         <td class="elementoTablas">${elemento.prod}</td>
@@ -110,25 +107,8 @@
    
 
 
-    /* Agregar al carrito */
-    const addToCart = (producto) => {
-        carrito.push(producto);
-        let comparacion = [producto];
-        console.log(comparacion);
-        console.log(carrito);
-        console.log(comparacion.length)
-        for (let i=0; i < comparacion.length ;i++) {
-            alert("el valor de i" + i)
-            if (comparacion[i] == carrito){
-                console.log("hola")
-            }else{
-                console.log("chau")
-            };
-=======
-        div.innerHTML = `<button class="categorias animate__animated aniBoton animate__pulse"  onclick=cates(${JSON.stringify(producto.categorias)})>${(producto.categorias)}</button>`;
-        document.getElementById("categorias").appendChild(div)
-    }   
-}
+  
+
 botones()
 
 function filas(elemento){
@@ -168,9 +148,7 @@ const addToCart = (producto) => {
     filas(producto)
     precioCuotas=(precioCuotas+producto.precio)
     console.log(precioCuotas)
-    total.innerHTML= `Total: $${precioCuotas}`
-    
-  
+    total.innerHTML= `Total: $${precioCuotas}` 
 }
 
 /* ELIMINAR */
@@ -199,60 +177,7 @@ function vaciarCarrito(){
     precioCuotas=0
 
 }
-
-/* CATEGORIAS */
-function cates (cat) {
-    console.log(cat)
-    switch (cat){
-        case "Zapatillas" :{
-            let tarjetas= document.getElementById("tarjetas")
-            tarjetas.innerHTML=``
-            let Zapatillas = productos.filter(function(cats) {
-                return cats.categorias === "Zapatillas";
-            })
-            generar(Zapatillas)
-            break;
-        }
-        case "Bolsos" :{
-            let tarjetas= document.getElementById("tarjetas")
-            tarjetas.innerHTML=``
-            let Bolsos = productos.filter(function(cats) {
-                return cats.categorias === "Bolsos";
-            })
-            generar(Bolsos)
-            break;
-        }
-        case "Accesorios" :{
-            let tarjetas= document.getElementById("")
-            tarjetas.innerHTML=``
-            let Accesorios = productos.filter(function(cats) {
-                return cats.categorias === "Accesorios";
-            })
-            generar(Accesorios)
-            break;
-        }
-        case "Pelotas" :{
-            let tarjetas= document.getElementById("tarjetas")
-            tarjetas.innerHTML=``
-            let Pelotas = productos.filter(function(cats) {
-                return cats.categorias === "Pelotas";
-            })
-            generar(Pelotas)
-            break;
-        }
-        default :{
-            console.log("ERROR")
-            break;
->>>>>>> 555d8322dd7f5a869f06ce552f08cecbf229d664
-        }
-       
-        
-        localStorage.setItem("cart", JSON.stringify(carrito));
-        filas(producto)
-        precioCuotas=(precioCuotas+producto.precio)
-        console.log(precioCuotas)
-        total.innerHTML= `Total: $${precioCuotas}`
-    }
+    
 
     /* ELIMINAR */
 
