@@ -62,7 +62,9 @@
                 </button>    
             `;
             tabla.appendChild(div);
-        document.getElementById("tarjetas").appendChild(div);
+
+            /! Implementacion de jquery !/
+            $("#tarjetas").append(div);
         }
     }
 
@@ -75,7 +77,9 @@
             div.setAttribute("id", "cajas");
             //plantillas literales
             div.innerHTML = `<button class="categorias animate__animated aniBoton animate__pulse"  onclick=cates(${JSON.stringify(producto.categorias)})>${(producto.categorias)}</button>`;
-            document.getElementById("categorias").appendChild(div)
+            
+            /! Implementacion de jquery !/
+            $("#categorias").append(div)
         }   
     }
 
@@ -92,7 +96,9 @@
         <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(elemento.categorias)})>X</button></td>`;
         tablaBody.appendChild(tr);
         tabla.appendChild(tablaBody);
-        document.getElementById("carro").appendChild(tabla);
+
+        /! Implementacion de jquery !/
+        $("#carro").append(tabla);
     }
 
 
@@ -124,7 +130,9 @@ function filas(elemento){
     <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(elemento.categorias)})>x</button></td>`;
     tablaBody.appendChild(fila);
     tabla.appendChild(tablaBody);
-    document.getElementById("carro").appendChild(tabla);
+
+    /! Implementacion de jquery !/
+    $("#carro").append(tabla);
 }
 /* Fin Funcion */
 
@@ -138,24 +146,34 @@ function calcular(){
 }
 /* Fin Funcion */
 
+/* TOMA DE DATOS/JQUERY */
+
+/* $("#datos").change */
+
 
 
 /* Agregar al carrito */
 const addToCart = (producto) => {
-    carrito.push(producto)
-    console.log(carrito)
-    localStorage.setItem("cart", JSON.stringify(carrito))
-    filas(producto)
-    precioCuotas=(precioCuotas+producto.precio)
-    console.log(precioCuotas)
-    total.innerHTML= `Total: $${precioCuotas}` 
+    carrito.push(producto);
+    localStorage.setItem("cart", JSON.stringify(carrito));
+    console.log(producto.cantidad)
+
+    const cantidad = carrito.find(elemento =>{
+        console.log(elemento)
+        return
+    });
+    console.log(JSON.stringify(cantidad))
+    
+
+  
+    
 }
 
 /* ELIMINAR */
 
 function eliminar(eliminado){
     console.log(eliminado)
-    let tabla = document.getElementById(eliminado);
+    let tabla = $("#eliminado");
     console.log(tabla)
     tabla.parentNode.removeChild(eliminado)
     precioCuotas=(precioCuotas-productos.precio)
@@ -165,7 +183,7 @@ function eliminar(eliminado){
 
 /* Vaciar carrito */
 function vaciarCarrito(){
-    let tabla=document.getElementById("tabla");
+    let tabla=$("#tabla");
     tabla.parentNode.removeChild(tabla);
     total.innerHTML= `Total: $ `;
     carrito=[];
@@ -180,15 +198,6 @@ function vaciarCarrito(){
     
 
     /* ELIMINAR */
-
-    function eliminar(productos){
-        precioCuotas=(precioCuotas-productos.precio),
-        console.log(tr.innerHTML);
-        
-        
-        total.innerHTML= `Total: $${precioCuotas}`;
-    }   
-
 
     /* Vaciar carrito */
     function vaciarCarrito(){
@@ -213,6 +222,9 @@ function vaciarCarrito(){
             
         })
     }
+
+
+    
 
     /* CATEGORIAS */
     function cates (cat) {
