@@ -1,4 +1,8 @@
     /* Funcion de cuotas */
+    
+    
+    
+    /* Es una funcion que tenia de antes que tengo que modificar */
     function pagoEnCuotas(){
         cuotas = (parseInt(prompt("Ingrese el numero de cuotas que quiere abonar entre 1, 3(sin interes), 6, 9 y12")))
         switch(cuotas){
@@ -82,61 +86,26 @@
             $("#categorias").append(div)
         }   
     }
-
-    function filas(elemento){
-        //crear las filas con sus celdas
-        tr = document.createElement("tr");
-        tr.setAttribute("id",elemento.prod)
-        //plantillas literales
-        tr.innerHTML = `<td class="elementoTablas"> ID=${elemento.id}</td>
-        <td><img class="compras" src=${elemento.imgs}></td>
-        <td class="elementoTablas">${elemento.prod}</td>
-        <td class="elementoTablas"><b>$ ${elemento.precio}</b></td>
-        <td class="elementoTablas"><input type="number" id="multiplicador"></input></td>
-        <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(elemento.categorias)})>X</button></td>`;
-        tablaBody.appendChild(tr);
-        tabla.appendChild(tablaBody);
-
-        /! Implementacion de jquery !/
-        $("#carro").append(tabla);
-    }
-
-
-    /* Agregar al carrito */
-    function calcular(){
-        let multiplicador = document.getElementById("multiplicador").value;
-        let total = (multiplicador*producto.precio);
-        console.log(total)
-    }
-    /* Fin Funcion */
-
-   
-
-
-  
-
 botones()
 
-function filas(elemento){
-    //crear las filas con sus celdas
-    let fila = document.createElement("tr");
-    fila.setAttribute("id",elemento.prod)
-    //plantillas literales
-    fila.innerHTML = `<td class="elementoTablas"> ID=${elemento.id}</td>
-    <td><img class="compras" src=${elemento.imgs}></td>
-    <td class="elementoTablas">${elemento.prod}</td>
-    <td class="elementoTablas"><b>$ ${elemento.precio}</b></td>
-    <td class="elementoTablas"><input type="number" id="multiplicador"></input></td>
-    <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(elemento.categorias)})>x</button></td>`;
-    tablaBody.appendChild(fila);
-    tabla.appendChild(tablaBody);
 
-    /! Implementacion de jquery !/
-    $("#carro").append(tabla);
-}
+const buscador = document.querySelector("#datos")
 /* Fin Funcion */
+const buscar = () => {
+    tarjetas.innerHTML=``
+    const texto = buscador.value.toLowerCase();
+    for( let producto of productos){
+        let nombre = producto.prod.toLowerCase();
 
-/* Fin Funciones */
+        if (nombre.indexOf(texto)!== -1){
+            tarjetas.innerHTML += `<h1>HOLA</h1>`
+        }
+
+    }
+}
+buscador.addEventListener("keyup",buscar)
+
+
 
 /* Agregar al carrito */
 function calcular(){
@@ -150,34 +119,77 @@ function calcular(){
 
 /* $("#datos").change */
 
+class productoCarrito {
+    constructor(obj) {
+        this.id = obj.id;
+        this.imgs = obj.imgs;
+        this.prod = obj.prod;
+        this.precio = obj.precio;
+        this.categorias = obj.categorias;
+        this.cantidad = 1;
+    }
+}
 
 
+/* POSICION DEL ARRAY Y CANTIDAD */
+let posicion;
+let cantidad;
 /* Agregar al carrito */
-const addToCart = (producto) => {
-    carrito.push(producto);
-    localStorage.setItem("cart", JSON.stringify(carrito));
-    console.log(producto.cantidad)
+function addToCart(productoNuevo) {
+    let encontrado = carrito.find(prod => prod.id == productoNuevo.id);
+    console.log(encontrado)
+    if (encontrado == undefined) {
+        let productoAAgregar = new productoCarrito(productoNuevo);
+        carrito.push(productoAAgregar);
+        console.log(carrito);
+        Swal.fire(
+            'Nuevo producto agregado al carro',
+            productoNuevo.prod,
+            'success'
+        );
+        $(tablaBody).append(`
+        <tr id=${JSON.stringify(productoNuevo.id)}>
+            <td class="elementoTablas"> ID=${productoNuevo.id}</td>
+            <td><img class="compras" src=${productoNuevo.imgs}></td>
+            <td class="elementoTablas">${productoNuevo.prod}</td>
+            <td class="elementoTablas"><b>$ ${productoNuevo.precio}</b></td>
+            <td class="elementoTablas"><input type="number" id="multiplicador"></input></td>
+            <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(productoNuevo.id)})>x</button></td>
+        <tr>`);
+            $(tabla).append(tablaBody)
+            $("#carro").append(tabla)
+            precioCuotas=precioCuotas+productoNuevo.precio
+            console.log(precioCuotas)
+            total.innerHTML= `Total: $${precioCuotas}`;
+            posicion = carrito.findIndex(p => p.id == productoNuevo.id);
+            console.log(posicion)
+        } else {
+            posicion = carrito.findIndex(p => p.id == productoNuevo.id);
+            console.log(posicion);
+            cantidad = carrito[posicion].cantidad += 1;
+            console.log(cantidad)
+            precioCuotas=(productoNuevo.precio*cantidad);
+            total.innerHTML= `Total: $${precioCuotas}`;
+            console.log(precioCuotas)
+            document.getElementById("multilpicador").value = 0;
 
-    const cantidad = carrito.find(elemento =>{
-        console.log(elemento)
-        return
-    });
-    console.log(JSON.stringify(cantidad))
-    
+        }
 
-  
-    
 }
 
 /* ELIMINAR */
 
 function eliminar(eliminado){
-    console.log(eliminado)
-    let tabla = $("#eliminado");
-    console.log(tabla)
-    tabla.parentNode.removeChild(eliminado)
-    precioCuotas=(precioCuotas-productos.precio)
-    total.innerHTML= `Total: $${precioCuotas}`
+    alert(eliminado);
+    let hola=document.getElementById(eliminado);
+    tablaBody.removeChild(hola);
+    cantidad=1;
+    carrito.splice(posicion);
+    /* Falta restar el precio eliminado */
+    precioCuotas=(precioCuotas);
+    console.log(precioCuotas)
+    total.innerHTML= `Total: $${precioCuotas}`;
+
 }   
 
 
@@ -192,7 +204,7 @@ function vaciarCarrito(){
     tabla.innerHTML=` `;
     tablaBody.innerHTML=` `;
     console.log(tabla.innerHTML);
-    precioCuotas=0
+    precioCuotas=0;
 
 }
     
