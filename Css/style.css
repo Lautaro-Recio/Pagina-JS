@@ -49,7 +49,8 @@ p {
   background-color: #1f1f1f; }
 
 .subtitulo {
-  font-size: 21px; }
+  font-size: 21px;
+  /* padding-right: 50%; */ }
 
 footer {
   background-color: #1f1f1f; }

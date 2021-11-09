@@ -84,7 +84,7 @@
             
             /! Implementacion de jquery !/
             $("#categorias").append(div)
-        }   
+        }
     }
 botones()
 
@@ -108,7 +108,7 @@ buscador.addEventListener("keyup",buscar)
 
 
 /* Agregar al carrito */
-function calcular(){
+function calcular(multiplo){
     let multiplicador = document.getElementById("multiplicador").value;
     let total = (multiplicador*producto.precio);
     console.log(total)
@@ -152,8 +152,8 @@ function addToCart(productoNuevo) {
             <td class="elementoTablas"> ID=${productoNuevo.id}</td>
             <td><img class="compras" src=${productoNuevo.imgs}></td>
             <td class="elementoTablas">${productoNuevo.prod}</td>
-            <td class="elementoTablas"><b>$ ${productoNuevo.precio}</b></td>
-            <td class="elementoTablas"><input type="number" id="multiplicador"></input></td>
+            <td class="elementoTablas"><b id=${productoNuevo.prod}>$ ${productoNuevo.precio}</b></td>
+            <td class="elementoTablas"><input type="number" value=1 id="multiplicador"></input></td>
             <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(productoNuevo.id)})>x</button></td>
         <tr>`);
             $(tabla).append(tablaBody)
@@ -171,10 +171,11 @@ function addToCart(productoNuevo) {
             precioCuotas=(productoNuevo.precio*cantidad);
             total.innerHTML= `Total: $${precioCuotas}`;
             console.log(precioCuotas)
-            document.getElementById("multilpicador").value = 0;
-
+            document.getElementById("multiplicador").value = cantidad;
+            let precio= document.getElementById("precio");
+            console.log(precio.innerText)
+            precio.innerText=`$${productoNuevo.precio*cantidad}`;
         }
-
 }
 
 /* ELIMINAR */
@@ -193,20 +194,9 @@ function eliminar(eliminado){
 }   
 
 
-/* Vaciar carrito */
-function vaciarCarrito(){
-    let tabla=$("#tabla");
-    tabla.parentNode.removeChild(tabla);
-    total.innerHTML= `Total: $ `;
-    carrito=[];
-    console.log(carrito);
-    localStorage.clear( );
-    tabla.innerHTML=` `;
-    tablaBody.innerHTML=` `;
-    console.log(tabla.innerHTML);
-    precioCuotas=0;
 
-}
+
+
     
 
     /* ELIMINAR */
@@ -224,16 +214,16 @@ function vaciarCarrito(){
         precioCuotas=0
     }
 
-    /* BOTON DE COMPRAR */
-    let compras= document.getElementById("comprar")
-    compras.onclick = () =>{
+    /* BOTON DE COMPRAR / CON JQUERY */
+    $("#comprar").click( function ()
+    {
         Swal.fire({
             title: 'Ingrese la cantidad de cuotas',
             input: 'number',
             confirmButtonText: 'Finalizar Compra',
             
         })
-    }
+    });
 
 
     
