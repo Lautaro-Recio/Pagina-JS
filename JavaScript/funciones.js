@@ -74,10 +74,10 @@
 
     /!BOTONES DE CATEGORIAS!/
     function botones (elemento){
-        let boton = productos.slice(0,4)
+        let boton = productos.slice(0,5)
         for (const producto of boton){
             let div=document.createElement("div");
-            div.setAttribute("class", "col-md-3 col-xs-5");
+            div.setAttribute("class", "col-md-4 col-xs-5");
             div.setAttribute("id", "cajas");
             //plantillas literales
             div.innerHTML = `<button class="categorias animate__animated aniBoton animate__pulse"  onclick=cates(${JSON.stringify(producto.categorias)})>${(producto.categorias)}</button>`;
@@ -85,8 +85,24 @@
             /! Implementacion de jquery !/
             $("#categorias").append(div)
         }
+        let div=document.createElement("div");
+            div.setAttribute("class", "col-md-4 col-xs-5");
+            div.setAttribute("id", "cajas");
+            //plantillas literales
+            div.innerHTML = `<button class="categorias animate__animated aniBoton animate__pulse"  id="todo">Todos los productos</button>`;
+            $("#categorias").append(div)
     }
-botones()
+
+   
+  /* GENERACION DE BOTONES */ 
+    botones()
+
+    $("#todo").click(
+        function mostrarTodos(){
+            tarjetas.innerHTML =``
+            generar(productos)
+        }
+    )
 
 
 const buscador = document.querySelector("#datos")
@@ -96,12 +112,33 @@ const buscar = () => {
     const texto = buscador.value.toLowerCase();
     for( let producto of productos){
         let nombre = producto.prod.toLowerCase();
-
         if (nombre.indexOf(texto)!== -1){
-            tarjetas.innerHTML += `<h1>HOLA</h1>`
+            div = document.createElement("div");
+            div.setAttribute("class", "col-md-3 col-xs-5 caja");
+            div.setAttribute("id", "cajas");
+            div.innerHTML = `
+                <img class="imgProds" src="${producto.imgs}" alt="${producto.prod}" class="prods">
+                <p class="nombreProd">${producto.prod}</p>
+                <b><p class="precio">$${producto.precio}</p></b>
+                <button id="addToCart" class="agregar aniBoton" onclick='addToCart(${JSON.stringify(producto)})'>Comprar</button>
+                </button>    
+            `;
+            tabla.appendChild(div);
+
+            /! Implementacion de jquery !/
+            $("#tarjetas").append(div);
+
+        }
+        if (tarjetas.innerHTML==""){
+            console.log("estoy vacio")
+            let prodNo= document.createElement("h6")
+            prodNo.setAttribute("class", "prodNO")
+            prodNo.textContent=`Producto no encontrado...`
+            $("#tarjetas").append(prodNo);
         }
 
     }
+  
 }
 buscador.addEventListener("keyup",buscar)
 
@@ -137,11 +174,9 @@ let cantidad;
 /* Agregar al carrito */
 function addToCart(productoNuevo) {
     let encontrado = carrito.find(prod => prod.id == productoNuevo.id);
-    console.log(encontrado)
     if (encontrado == undefined) {
         let productoAAgregar = new productoCarrito(productoNuevo);
         carrito.push(productoAAgregar);
-        console.log(carrito);
         Swal.fire(
             'Nuevo producto agregado al carro',
             productoNuevo.prod,
@@ -159,21 +194,15 @@ function addToCart(productoNuevo) {
             $(tabla).append(tablaBody)
             $("#carro").append(tabla)
             precioCuotas=precioCuotas+productoNuevo.precio
-            console.log(precioCuotas)
             total.innerHTML= `Total: $${precioCuotas}`;
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
-            console.log(posicion)
         } else {
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
-            console.log(posicion);
             cantidad = carrito[posicion].cantidad += 1;
-            console.log(cantidad)
             precioCuotas=(productoNuevo.precio*cantidad);
             total.innerHTML= `Total: $${precioCuotas}`;
-            console.log(precioCuotas)
             document.getElementById("multiplicador").value = cantidad;
             let precio= document.getElementById("precio");
-            console.log(precio.innerText)
             precio.innerText=`$${productoNuevo.precio*cantidad}`;
         }
 }
@@ -181,7 +210,6 @@ function addToCart(productoNuevo) {
 /* ELIMINAR */
 
 function eliminar(eliminado){
-    alert(eliminado);
     let hola=document.getElementById(eliminado);
     tablaBody.removeChild(hola);
     cantidad=1;
@@ -193,13 +221,6 @@ function eliminar(eliminado){
 
 }   
 
-
-
-
-
-    
-
-    /* ELIMINAR */
 
     /* Vaciar carrito */
     function vaciarCarrito(){
@@ -230,7 +251,6 @@ function eliminar(eliminado){
 
     /* CATEGORIAS */
     function cates (cat) {
-        console.log(cat)
         switch (cat){
             case "Zapatillas" :{
                 let tarjetas= document.getElementById("tarjetas");
@@ -266,6 +286,15 @@ function eliminar(eliminado){
                     return cats.categorias === "Pelotas";
                 })
                 generar(Pelotas);
+                break;
+            }
+            case "Entrenamiento" :{
+                let tarjetas= document.getElementById("tarjetas");
+                tarjetas.innerHTML=``;
+                let Zapatillas = productos.filter(function(cats) {
+                    return cats.categorias === "Entrenamiento";
+                })
+                generar(Zapatillas);
                 break;
             }
             default :{

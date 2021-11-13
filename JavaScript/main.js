@@ -10,7 +10,6 @@ let montoEnCuotas;
 const listaFinal=[];
 let prodSelecc;
 var carrito = [];
-console.log(carrito)
 /* Fin de Variables */
 /* FUNCIONES */   
 
@@ -27,6 +26,5 @@ borrar.addEventListener("click",vaciarCarrito)
 
 /*mostrar tarjeta de producto */
 generar(productos)
-
 /* Eventos */
 
