@@ -1,6 +1,8 @@
     /* Funcion de cuotas */
     
-    
+
+    /* ESCONDE EL BOTON COMPRAR */
+    $("#comprar").hide()
     
     /* Es una funcion que tenia de antes que tengo que modificar */
     function pagoEnCuotas(){
@@ -184,8 +186,8 @@ function addToCart(productoNuevo) {
         );
         $(tablaBody).append(`
         <tr id=${JSON.stringify(productoNuevo.id)}>
-            <td class="elementoTablas"> ID=${productoNuevo.id}</td>
-            <td><img class="compras" src=${productoNuevo.imgs}></td>
+            <td class=""> ID=${productoNuevo.id}</td>
+            <td class="elementoTablas"><img class="compras" src=${productoNuevo.imgs}></td>
             <td class="elementoTablas">${productoNuevo.prod}</td>
             <td class="elementoTablas"><b id=${productoNuevo.prod}>$ ${productoNuevo.precio}</b></td>
             <td class="elementoTablas"><input type="number" value=1 id="multiplicador"></input></td>
@@ -196,6 +198,16 @@ function addToCart(productoNuevo) {
             precioCuotas=precioCuotas+productoNuevo.precio
             total.innerHTML= `Total: $${precioCuotas}`;
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
+
+
+            /! ANIMACIONES CONCATENADAS!/
+            $("#comprar").show(2000)
+            .css("background-color", "green")
+            .animate({
+                width:`250px`,
+                height:`150px`,
+            })
+            
         } else {
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
             cantidad = carrito[posicion].cantidad += 1;
@@ -233,6 +245,9 @@ function eliminar(eliminado){
         tabla.innerHTML=` `;
         tablaBody.innerHTML=` `;
         precioCuotas=0
+        $("#comprar").hide(2000)
+       
+        
     }
 
     /* BOTON DE COMPRAR / CON JQUERY */

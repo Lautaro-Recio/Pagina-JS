@@ -27,42 +27,7 @@
                         <button class="boton" type="submit"><img src="assets/images/lupa.png" alt=""></button>
                         <h2 class="subtitulo">"Tus Productos deportivos al alcance de tus manos"</h2>
                       </form>   
-                      <!-- offcanvas-start cambia para que la nav aparezca por la izquierda -->
-                      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header">
-                          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
-                          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                            <li class="nav-item">
-                              <a class="links" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="links" href="#">Link</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                              <a class="links dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                              </a>
-                              <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                                  <li>
-                                    <a class="links" href="#">Action</a>
-                                  </li>
-                                  <li>
-                                    <a class="links" href="#">Another action</a>
-                                  </li>
-                                  <li>
-                                    <a class="links" href="#">Another action</a></li>
-                                  </li>
-                                  <li>
-                                    <a class="links" href="#">Something else here</a>
-                                  </li>
-                                </ul>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
+                      <button><img src="assets/images/carrito.png" alt="Carrito" id="irACarro" class="compras"></button>
                     </div>
                   </nav>
             </div>
@@ -108,17 +73,17 @@
         </div>
     </div>
     <div class="container borde">
-        <div class="row espacio animate__animated animate__zoomIn" id="tarjetas">
+        <div class="row espacio " id="tarjetas">
           <!-- Productos aca -->
         </div>
     </div>
-    <div class="container borde">
+    <div class="container borde" id="animacionCarro" href="#venirACarro">
       <div class="row espacio" >
-        <div class="col-md-12 col-xs-12">
+        <div class="col-md-12 col-xs-12" >
           <h4>¿Todavia no compraste nada?</h4>
           <p>Recorre nuestro sitio y elegi tus productos!!</p>
         </div>
-        <div class="col-md-12 col-xs-12" id="carro">
+        <div class="col-md-12 col-xs-12" id="carro" >
           <!-- Compras Aca -->
         </div>
         <div class="col-md-4 col-xs-3">
@@ -154,6 +119,8 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Script boostrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <!-- Script de animaciones -->
+    <script src="JavaScript/animaciones.js"></script>
     <!-- Script de arrays -->
     <script src="JavaScript/arrays.js"></script>
     <!-- Script de funciones -->
