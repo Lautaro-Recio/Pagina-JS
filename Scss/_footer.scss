@@ -11,3 +11,15 @@ footer{
     width: 100px;
     height: 100px;
 }
+
+.fotoCreadores{
+    width: 50%;
+    height: 50%;
+    margin: 5% 25%;
+    border: $amarillo 3px solid;
+    border-radius: 100%;
+}
+.infoCreadores{
+    text-align: center;
+    color:$fondo;
+}

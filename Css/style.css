@@ -27,13 +27,13 @@ p {
 
 .carro {
   background-color: #1f1f1f;
-  width: 60px;
-  height: 50px;
-  margin: 0px 15px; }
+  width: 45px;
+  height: 50px; }
 
 .carrito {
-  width: 50px;
-  height: 50px; }
+  width: 60px;
+  height: 60px;
+  background-color: #1f1f1f; }
 
 .logo1 {
   width: 130px;
@@ -64,6 +64,17 @@ footer {
 .logo {
   width: 100px;
   height: 100px; }
+
+.fotoCreadores {
+  width: 50%;
+  height: 50%;
+  margin: 5% 25%;
+  border: #ffde59 3px solid;
+  border-radius: 100%; }
+
+.infoCreadores {
+  text-align: center;
+  color: lightgray; }
 
 .compras {
   height: 100px;
@@ -177,6 +188,24 @@ h4 {
   .compras {
     height: 100%;
     width: 125%; } }
+
+.label2 {
+  margin-left: 5%;
+  font-size: 21px;
+  padding: 3%;
+  font-weight: bolder; }
+
+.cuotas {
+  margin-bottom: 5%; }
+
+.textForm {
+  width: 600px;
+  margin-bottom: 5%; }
+
+.faltantes {
+  font-size: 21px;
+  color: red;
+  font-weight: bolder; }
 
 body {
   background-color: #ffde59; }

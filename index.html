@@ -27,7 +27,7 @@
                         <button class="boton" type="submit"><img src="assets/images/lupa.png" alt=""></button>
                         <h2 class="subtitulo">"Tus Productos deportivos al alcance de tus manos"</h2>
                       </form>   
-                      <button><img src="assets/images/carrito.png" alt="Carrito" id="irACarro" class="compras"></button>
+                      <button class="carrito" id="irACarro"><img src="assets/images/carrito.png" alt="Carrito" class="carro"></button>
                     </div>
                   </nav>
             </div>
@@ -41,13 +41,13 @@
           <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active" data-bs-interval="10000">
-                <img src="assets/images/bolso.jpg" class="d-block w-100 imgCarrousel" alt="...">
+                <img src="assets/images/descuento.jpeg" class="d-block w-100 imgCarrousel" alt="...">
               </div>
               <div class="carousel-item" data-bs-interval="2000">
-                <img src="assets/images/bolso.jpg" class="d-block w-100 imgCarrousel" alt="...">
+                <img src="assets/images/lrmarket.jpeg" class="d-block w-100 imgCarrousel" alt="...">
               </div>
               <div class="carousel-item">
-                <img src="assets/images/bolso.jpg" class="d-block w-100 imgCarrousel" alt="...">
+                <img src="assets/images/envios.jpeg" class="d-block w-100 imgCarrousel" alt="...">
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
@@ -73,7 +73,7 @@
         </div>
     </div>
     <div class="container borde">
-        <div class="row espacio " id="tarjetas">
+        <div class="row espacio animate__animated animate__fadeInUp " id="tarjetas" >
           <!-- Productos aca -->
         </div>
     </div>
@@ -96,11 +96,21 @@
           <button class="botonCarro" id="borrar">Vaciar carrito</button>
         </div>
       </div>
-  </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-xs-12 " id="formulario">
+
+        </div>          
+      </div>
+    </div>
     <!-- FOOTER -->
 
     <footer>
       <div class="container">
+        <div class="row" id="creadores">
+          <!-- CREADORES CON AJAX ACA -->
+        </div>
         <div class="row">
           <div class="col-md-3 col-xs-12">
             <img class="logo" src="assets/images/logo.png" alt="Logo">
@@ -110,6 +120,7 @@
             <img class="redes" src="assets/images/linkedin.png" alt="Logo">
             <img class="redes" src="assets/images/whatsapp.png" alt="Logo">
           </div>
+        
         </div>
       </div>
     </footer>

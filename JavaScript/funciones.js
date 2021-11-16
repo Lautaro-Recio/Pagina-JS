@@ -132,7 +132,6 @@ const buscar = () => {
 
         }
         if (tarjetas.innerHTML==""){
-            console.log("estoy vacio")
             let prodNo= document.createElement("h6")
             prodNo.setAttribute("class", "prodNO")
             prodNo.textContent=`Producto no encontrado...`
@@ -189,17 +188,15 @@ function addToCart(productoNuevo) {
             <td class=""> ID=${productoNuevo.id}</td>
             <td class="elementoTablas"><img class="compras" src=${productoNuevo.imgs}></td>
             <td class="elementoTablas">${productoNuevo.prod}</td>
-            <td class="elementoTablas"><b id=${productoNuevo.prod}>$ ${productoNuevo.precio}</b></td>
-            <td class="elementoTablas"><input type="number" value=1 id="multiplicador"></input></td>
-            <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(productoNuevo.id)})>x</button></td>
+            <td class="elementoTablas"><b id=${productoNuevo.precio}>$ ${productoNuevo.precio}</b></td>
+            <td class="elementoTablas"><input type="number" value=1 id="${productoNuevo.prod}"></input></td>
+            <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(productoNuevo.precio)})>x</button></td>
         <tr>`);
             $(tabla).append(tablaBody)
             $("#carro").append(tabla)
             precioCuotas=precioCuotas+productoNuevo.precio
             total.innerHTML= `Total: $${precioCuotas}`;
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
-
-
             /! ANIMACIONES CONCATENADAS!/
             $("#comprar").show(2000)
             .css("background-color", "green")
@@ -211,10 +208,11 @@ function addToCart(productoNuevo) {
         } else {
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
             cantidad = carrito[posicion].cantidad += 1;
-            precioCuotas=(productoNuevo.precio*cantidad);
+            precioCuotas=precioCuotas+productoNuevo.precio;
             total.innerHTML= `Total: $${precioCuotas}`;
-            document.getElementById("multiplicador").value = cantidad;
-            let precio= document.getElementById("precio");
+            document.getElementById(productoNuevo.prod).value = cantidad;
+            console.log(productoNuevo.precio)
+            let precio= document.getElementById(productoNuevo.precio);
             precio.innerText=`$${productoNuevo.precio*cantidad}`;
         }
 }
@@ -227,7 +225,7 @@ function eliminar(eliminado){
     cantidad=1;
     carrito.splice(posicion);
     /* Falta restar el precio eliminado */
-    precioCuotas=(precioCuotas);
+    precioCuotas=(precioCuotas-eliminado);
     console.log(precioCuotas)
     total.innerHTML= `Total: $${precioCuotas}`;
 
@@ -252,15 +250,111 @@ function eliminar(eliminado){
 
     /* BOTON DE COMPRAR / CON JQUERY */
     $("#comprar").click( function ()
-    {
-        Swal.fire({
-            title: 'Ingrese la cantidad de cuotas',
-            input: 'number',
-            confirmButtonText: 'Finalizar Compra',
+    {   
+     
+        $("#formulario").attr("class","col-md-12 col-xs-12 borde")
+        $("#formulario").append(`
+            <form id="miForm">
+                <div class="col-md-12 col-xs-12">
+                    <label class="label1">
+                        <h4>Ingrese sus datos</h4>
+
+                        <input type="text" class="textForm" id="nombre" placeholder="Nombre...">
+                        <br>
+                        <input type="text" class="textForm" id="apellido" placeholder="Apellido...">
+                        <br> 
+                        <input type="text" class="textForm" id="direccion" placeholder="Direccion...">
+                        <br>
+                        <input type="text" class="textForm" id="gmail" placeholder="Gmail...">
+                        <br>
+                        <input type="text" class="textForm" id="nro" placeholder="Nro de contacto...">
+                        <p id="faltantes" class="faltantes"></p>
+                    </label>
+                
+                    <label class="label2">
+                        <h4>Seleccione su plan de pago</h4>
+                        <input type="radio" value="1" class="cuotas" name="cuotas" id="cuotas1"> Pago Total
+                        <br>
+                        <input type="radio" value="3" class="cuotas" name="cuotas" id="cuotas2"> 3 Cuotas sin interes
+                        <br>
+                        <input type="radio" value="6" class="cuotas" name="cuotas" id="cuotas3"> 6 Cuotas
+                        <br>
+                        <input type="radio" value="9" class="cuotas" name="cuotas" id="cuotas4"> 9 Cuotas
+                        <br>
+                        <input type="radio" value="12" class="cuotas" name="cuotas" id="cuotas5"> 12 Cuotas
+
+                        <p id="totalCuotas"></p>
+                        
+                    </label>
+                </div>
+                    <br>
+                <label> 
+                    <button id="enviar" type="submit">Enviar </button>
+                    <button id="" type="reset">Limpiar </button>
+                </label>
+            </form>
+        `)
+        $("#miForm").submit(function(e){
+            e.preventDefault();
+            /* VALIDAR LOS INPUT TEXT */
+            let nom=$("#nombre").val()
+            let ape=$("#apellido").val()
+            let direccion=$("#direccion").val()
+            let mail=$("#gmail").val()
+            let nro=$("#nro").val()
             
+            /* VALIDACION SI ESTAN VACIOS LOS INPUTS */
+            if ((nom === "") || (ape === "") || (mail === "") || (direccion === "") || (nro === "")) {
+                $("#faltantes").append("Rellene los campos faltantes")
+            }else{
+                console.log(nom,ape,direccion,mail,nro)
+                Swal.fire(
+                    $("#nombre").val(),
+                    '¡Tu pedido esta en camino!',
+                    'success',
+                );
+            };
+            
+            
+            
+           
+
         })
+        /* FALTA RETOCAR ALGUNAS COSAS */
+        $(document).ready(function(){  
+  
+            $(".cuotas").click(function() {  
+                if($("#cuotas1").is(':checked')) {  
+                    $("#totalCuotas").html(' ')
+                    let cantCuotas = $("#cuotas1").val();
+                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))                    
+                } else if ($("#cuotas2").is(':checked')){ 
+                    $("#totalCuotas").html(' ')
+                    let cantCuotas = $("#cuotas2").val();
+                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))
+                } else if ($("#cuotas3").is(':checked')){ 
+                    $("#totalCuotas").html(' ')
+                    let cantCuotas = $("#cuotas3").val(); 
+                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))
+                } else if ($("#cuotas4").is(':checked')){ 
+                    $("#totalCuotas").html(' ')
+                    let cantCuotas = $("#cuotas4").val();
+                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))
+                } else if ($("#cuotas5").is(':checked')){ 
+                    $("#totalCuotas").html(' ')
+                    let cantCuotas = $("#cuotas5").val();  
+                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))
+                } 
+            });  
+          
+        });
     });
 
+    
+       
+
+
+    
 
     
 
@@ -318,3 +412,41 @@ function eliminar(eliminado){
             }
         }
     }
+
+
+    /* AJAX */
+
+    /* URL DE PERSONAJES DE HARRY POTTER */
+    const URLGET = "http://hp-api.herokuapp.com/api/characters"
+    const puestos=["","Front End","Jefa de diseño","Back End"]
+    console.log(puestos)
+
+$("#creadores").prepend('<button class="categorias" id="btn1"> Mostrar creadores </button>');
+$("#btn1").click(() => { 
+    
+    $.get(URLGET, function (respuesta, estado) {
+          if(estado === "success"){
+            let misDatos = respuesta;
+            let creadores = misDatos.slice(0,3)
+            let i=0;
+            for (const dato of creadores) {
+                i=i+1
+                console.log(puestos[i])
+                $("#creadores").prepend(`
+                <div class="col-md-4 col-xs-4" id="aniCrea">
+                    <img class="fotoCreadores" src=${dato.image}>
+                    <h3 class="infoCreadores">${dato.name}</h3>
+                    <p class="infoCreadores">${puestos[i]}</p>
+                </div>`
+            );
+            
+            }  
+            }
+            $("#creadores").prepend(`<h3 class="infoCreadores">Nuestros Creadores</h3> `) 
+            $("#btn1").hide(2000);
+            $("#creadores")
+            .hide(1)
+            .slideDown(2000)
+    })
+    
+})
