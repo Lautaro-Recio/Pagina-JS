@@ -283,17 +283,19 @@ function eliminar(eliminado){
                         <br>
                         <input type="radio" value="12" class="cuotas" name="cuotas" id="cuotas5"> 12 Cuotas
 
-                        <p id="totalCuotas"></p>
+                        <p id="totalCuotas" class="totalCuotas"></p>
                         
                     </label>
                 </div>
                     <br>
-                <label> 
-                    <button id="enviar" type="submit">Enviar </button>
-                    <button id="" type="reset">Limpiar </button>
+                <label class="label3"> 
+                    <button class="botonesForm" id="enviar" type="submit">Enviar </button>
+                    <button class="botonesForm" type="reset">Limpiar </button>
                 </label>
             </form>
         `)
+
+
         $("#miForm").submit(function(e){
             e.preventDefault();
             /* VALIDAR LOS INPUT TEXT */
@@ -314,11 +316,6 @@ function eliminar(eliminado){
                     'success',
                 );
             };
-            
-            
-            
-           
-
         })
         /* FALTA RETOCAR ALGUNAS COSAS */
         $(document).ready(function(){  
@@ -327,36 +324,28 @@ function eliminar(eliminado){
                 if($("#cuotas1").is(':checked')) {  
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas1").val();
-                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))                    
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas))                    
                 } else if ($("#cuotas2").is(':checked')){ 
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas2").val();
-                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas3").is(':checked')){ 
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas3").val(); 
-                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas4").is(':checked')){ 
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas4").val();
-                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas5").is(':checked')){ 
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas5").val();  
-                    $("#totalCuotas").append("$"+(precioCuotas/cantCuotas))
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } 
             });  
           
         });
     });
-
-    
-       
-
-
-    
-
-    
 
     /* CATEGORIAS */
     function cates (cat) {
@@ -414,15 +403,15 @@ function eliminar(eliminado){
     }
 
 
-    /* AJAX */
+    /! AJAX !/
 
     /* URL DE PERSONAJES DE HARRY POTTER */
     const URLGET = "http://hp-api.herokuapp.com/api/characters"
     const puestos=["","Front End","Jefa de diseño","Back End"]
     console.log(puestos)
 
-$("#creadores").prepend('<button class="categorias" id="btn1"> Mostrar creadores </button>');
-$("#btn1").click(() => { 
+    $("#creadores").prepend('<button class="categorias" id="btn1"> Mostrar creadores </button>');
+    $("#btn1").click(() => { 
     
     $.get(URLGET, function (respuesta, estado) {
           if(estado === "success"){

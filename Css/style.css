@@ -193,7 +193,8 @@ h4 {
   margin-left: 5%;
   font-size: 21px;
   padding: 3%;
-  font-weight: bolder; }
+  font-weight: bolder;
+  width: 45%; }
 
 .cuotas {
   margin-bottom: 5%; }
@@ -206,6 +207,20 @@ h4 {
   font-size: 21px;
   color: red;
   font-weight: bolder; }
+
+.totalCuotas {
+  font-size: 18px; }
+
+.botonesForm {
+  margin: 2% 19%;
+  border-radius: 10px;
+  width: 10%;
+  height: 10%;
+  background-color: #ffde59;
+  border: 5px solid #1f1f1f; }
+
+.label3 {
+  width: 100%; }
 
 body {
   background-color: #ffde59; }
