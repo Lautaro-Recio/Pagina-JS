@@ -4,47 +4,11 @@
     /* ESCONDE EL BOTON COMPRAR */
     $("#comprar").hide()
     
-    /* Es una funcion que tenia de antes que tengo que modificar */
-    function pagoEnCuotas(){
-        cuotas = (parseInt(prompt("Ingrese el numero de cuotas que quiere abonar entre 1, 3(sin interes), 6, 9 y12")))
-        switch(cuotas){
-            case 1:{
-                alert("Al elegir esta opcion debera abonar $" + precioCuotas );
-                break
-            }
-            case 3:{
-                primerEntrega=precioCuotas-(precioCuotas/100*50);
-                montoEnCuotas=(primerEntrega/2);
-                alert("Al elegir esta opcion debera abonar $" + primerEntrega + " mas 2 Cuotas de $" + montoEnCuotas  );
-                break
-            }
-            case 6:{
-                primerEntrega= precioCuotas-(precioCuotas/100*50);
-                montoEnCuotas=(primerEntrega/5)+(primerEntrega/100*10);;
-                alert("Al elegir esta opcion debera abonar $" + primerEntrega + " mas 5 Cuotas de $" + montoEnCuotas  );
-                break
-            }
-            case 9:{
-                primerEntrega=precioCuotas-(precioCuotas/100*50);
-                montoEnCuotas=(primerEntrega/8)+(primerEntrega/100*12);
-                alert("Al elegir esta opcion debera abonar $" + primerEntrega + " mas 8 Cuotas de $" + montoEnCuotas  );
-                break
-            }
-            case 12:{
-                primerEntrega=precioCuotas-(precioCuotas/100*50);
-                montoEnCuotas=(primerEntrega/11)+(primerEntrega/100*15);;
-                alert("Al elegir esta opcion debera abonar $" + primerEntrega + " mas 11 Cuotas de $" + montoEnCuotas  );
-                break   
-            }
-            default : {
-                alert("No ingreso un numero de cuotas pertinente")
-            }
-
-        }
-    }
+   
+    
 
 
-    /! tabla con DOM !/
+    /* tabla con DOM */
     let tabla = document.createElement("table");
     tabla.setAttribute("class", "table table-striped");
     tabla.setAttribute("id", "tabla");
