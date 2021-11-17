@@ -1,11 +1,11 @@
-    /* Funcion de cuotas */
+   /* Funcion de cuotas */
     
 
     /* ESCONDE EL BOTON COMPRAR */
     $("#comprar").hide()
     
    
-    
+
 
 
     /* tabla con DOM */
@@ -72,8 +72,6 @@
 
 
 const buscador = document.querySelector("#datos")
-
-
 /* Fin Funcion */
 const buscar = () => {
     tarjetas.innerHTML=``
@@ -107,8 +105,6 @@ const buscar = () => {
     }
   
 }
-
-
 buscador.addEventListener("keyup",buscar)
 
 
@@ -146,7 +142,6 @@ function addToCart(productoNuevo) {
     if (encontrado == undefined) {
         let productoAAgregar = new productoCarrito(productoNuevo);
         carrito.push(productoAAgregar);
-        localStorage.setItem("cart",carrito)
         Swal.fire(
             'Nuevo producto agregado al carro',
             productoNuevo.prod,
@@ -166,8 +161,6 @@ function addToCart(productoNuevo) {
             precioCuotas=precioCuotas+productoNuevo.precio
             total.innerHTML= `Total: $${precioCuotas}`;
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
-
-
             /! ANIMACIONES CONCATENADAS!/
             $("#comprar").show(2000)
             .css("background-color", "green")
@@ -175,14 +168,15 @@ function addToCart(productoNuevo) {
                 width:`250px`,
                 height:`150px`,
             })
-            
+            console.log(carrito)
         } else {
+            console.log(carrito)
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
             cantidad = carrito[posicion].cantidad += 1;
             precioCuotas=precioCuotas+productoNuevo.precio;
             total.innerHTML= `Total: $${precioCuotas}`;
             document.getElementById(productoNuevo.prod).value = cantidad;
-            console.log(productoNuevo.precio);
+            console.log(productoNuevo.precio)
             let precio= document.getElementById(productoNuevo.precio);
             precio.innerText=`$${productoNuevo.precio*cantidad}`;
         }
@@ -191,14 +185,18 @@ function addToCart(productoNuevo) {
 /* ELIMINAR */
 
 function eliminar(eliminado){
-    let eli=document.getElementById(eliminado);
-    tablaBody.removeChild(eli);
-    cantidad=1;
-    carrito.splice(posicion);
+    let hola=document.getElementById(eliminado);
+    tablaBody.removeChild(hola);
+    posicion = carrito.findIndex(p => p.id == eliminado);
+    cantidad = carrito[posicion].cantidad = 1;
+    console.log(posicion);
+    console.log(carrito.splice(posicion,1));
+    console.log(carrito);
     /* Falta restar el precio eliminado */
-    precioCuotas=(precioCuotas-eliminado.precio);
-    console.log(precioCuotas)
-    total.innerHTML= `Total: $0`;
+    precioCuotas=(precioCuotas-eliminado);
+    console.log(precioCuotas);
+    total.innerHTML= `Total: $${precioCuotas}`;
+
 }   
 
 
@@ -219,9 +217,9 @@ function eliminar(eliminado){
     }
 
     /* BOTON DE COMPRAR / CON JQUERY */
-    $("#comprar").click( function (){   
-        $("#formulario").html(``)
-        $("#formulario").show()
+    $("#comprar").click( function ()
+    {   
+     
         $("#formulario").attr("class","col-md-12 col-xs-12 borde")
         $("#formulario").append(`
             <form id="miForm">
@@ -259,7 +257,7 @@ function eliminar(eliminado){
                 </div>
                     <br>
                 <label class="label3"> 
-                    <button class="botonesForm" id="enviar" type="submit">Terminar compra </button>
+                    <button class="botonesForm" id="enviar" type="submit">Enviar </button>
                     <button class="botonesForm" type="reset">Limpiar </button>
                 </label>
             </form>
@@ -277,8 +275,7 @@ function eliminar(eliminado){
             
             /* VALIDACION SI ESTAN VACIOS LOS INPUTS */
             if ((nom === "") || (ape === "") || (mail === "") || (direccion === "") || (nro === "")) {
-                $("#faltantes").html(' ')
-                $("#faltantes").append("Rellene los campos faltantes");
+                $("#faltantes").append("Rellene los campos faltantes")
             }else{
                 console.log(nom,ape,direccion,mail,nro)
                 Swal.fire(
@@ -286,13 +283,11 @@ function eliminar(eliminado){
                     '¡Tu pedido esta en camino!',
                     'success',
                 );
-                $("#formulario").fadeOut()
-                vaciarCarrito()
             };
         })
         /* FALTA RETOCAR ALGUNAS COSAS */
         $(document).ready(function(){  
-            
+  
             $(".cuotas").click(function() {  
                 if($("#cuotas1").is(':checked')) {  
                     $("#totalCuotas").html(' ')
@@ -301,25 +296,23 @@ function eliminar(eliminado){
                 } else if ($("#cuotas2").is(':checked')){ 
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas2").val();
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas3").is(':checked')){ 
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas3").val(); 
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*18+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas4").is(':checked')){ 
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas4").val();
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*20+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas5").is(':checked')){ 
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas5").val();  
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*23+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } 
             });  
           
         });
-
-
     });
 
     /* CATEGORIAS */
