@@ -222,6 +222,28 @@ h4 {
 .label3 {
   width: 100%; }
 
+.elementoCamion {
+  background-color: white; }
+
+.imgCamion {
+  width: 50px;
+  height: 50px; }
+
+.desplegableCamion {
+  color: #1f1f1f;
+  text-decoration: none;
+  list-style: none;
+  font-size: 21px;
+  background-color: white;
+  border: 5px #ffde59 solid;
+  margin: 10%; }
+
+a:hover {
+  color: #ffde59; }
+
+.muestraCamion {
+  padding: 5%; }
+
 body {
   background-color: #ffde59; }
 

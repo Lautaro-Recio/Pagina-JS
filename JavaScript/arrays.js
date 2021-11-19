@@ -14,6 +14,9 @@
         {"id":8,imgs:"assets/images/muñequera.jpg", prod:"Muñequera",precio:700,categorias:"Accesorios",cantidad:1},
         {"id":9,imgs:"assets/images/hombrera.jpg", prod:"Hombrera",precio:2500,categorias:"Accesorios",cantidad:1},
         {"id":10,imgs:"assets/images/mediasDeCompresion.jpg", prod:"Medias de compresion",precio:1500,categorias:"Accesorios",cantidad:1},
+        {"id":11,imgs:"assets/images/pelotaSelect.jpg", prod:"Pelota Select",precio:10000,categorias:"Pelotas",cantidad:1},
+        {"id":12,imgs:"assets/images/zapatillasAdidas.jpg", prod:"Zapatillas Adidas",precio:10000,categorias:"Zapatillas",cantidad:1},
+
         
     ]
 /* Fin Array */

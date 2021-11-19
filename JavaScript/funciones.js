@@ -163,12 +163,7 @@ function addToCart(productoNuevo) {
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
             /! ANIMACIONES CONCATENADAS!/
             $("#comprar").show(2000)
-            .css("background-color", "green")
-            .animate({
-                width:`250px`,
-                height:`150px`,
-            })
-            console.log(carrito)
+            
         } else {
             console.log(carrito)
             posicion = carrito.findIndex(p => p.id == productoNuevo.id);
@@ -176,26 +171,26 @@ function addToCart(productoNuevo) {
             precioCuotas=precioCuotas+productoNuevo.precio;
             total.innerHTML= `Total: $${precioCuotas}`;
             document.getElementById(productoNuevo.prod).value = cantidad;
-            console.log(productoNuevo.precio)
             let precio= document.getElementById(productoNuevo.precio);
             precio.innerText=`$${productoNuevo.precio*cantidad}`;
         }
+        localStorage.setItem("cart",JSON.stringify(carrito))
 }
 
 /* ELIMINAR */
 
 function eliminar(eliminado){
+    localStorage.removeItem("cart")
     let hola=document.getElementById(eliminado);
     tablaBody.removeChild(hola);
     posicion = carrito.findIndex(p => p.id == eliminado);
     cantidad = carrito[posicion].cantidad = 1;
-    console.log(posicion);
-    console.log(carrito.splice(posicion,1));
-    console.log(carrito);
+    carrito.splice(posicion,1);
     /* Falta restar el precio eliminado */
     precioCuotas=(precioCuotas-eliminado);
     console.log(precioCuotas);
     total.innerHTML= `Total: $${precioCuotas}`;
+    localStorage.setItem("cart",JSON.stringify(carrito))
 
 }   
 
@@ -218,15 +213,15 @@ function eliminar(eliminado){
 
     /* BOTON DE COMPRAR / CON JQUERY */
     $("#comprar").click( function ()
-    {   
-     
+    {      
+        $("#formulario").html(``);
+        $("#formulario").show(1000)
         $("#formulario").attr("class","col-md-12 col-xs-12 borde")
         $("#formulario").append(`
             <form id="miForm">
                 <div class="col-md-12 col-xs-12">
                     <label class="label1">
                         <h4>Ingrese sus datos</h4>
-
                         <input type="text" class="textForm" id="nombre" placeholder="Nombre...">
                         <br>
                         <input type="text" class="textForm" id="apellido" placeholder="Apellido...">
@@ -261,21 +256,21 @@ function eliminar(eliminado){
                     <button class="botonesForm" type="reset">Limpiar </button>
                 </label>
             </form>
-        `)
+        `);
 
 
         $("#miForm").submit(function(e){
             e.preventDefault();
             /* VALIDAR LOS INPUT TEXT */
-            let nom=$("#nombre").val()
-            let ape=$("#apellido").val()
-            let direccion=$("#direccion").val()
-            let mail=$("#gmail").val()
-            let nro=$("#nro").val()
+            let nom=$("#nombre").val();
+            let ape=$("#apellido").val();
+            let direccion=$("#direccion").val();
+            let mail=$("#gmail").val();
+            let nro=$("#nro").val();
             
             /* VALIDACION SI ESTAN VACIOS LOS INPUTS */
             if ((nom === "") || (ape === "") || (mail === "") || (direccion === "") || (nro === "")) {
-                $("#faltantes").append("Rellene los campos faltantes")
+                $("#faltantes").append("Rellene los campos faltantes");
             }else{
                 console.log(nom,ape,direccion,mail,nro)
                 Swal.fire(
@@ -283,6 +278,12 @@ function eliminar(eliminado){
                     '¡Tu pedido esta en camino!',
                     'success',
                 );
+                generarCompra()
+                vaciarCarrito()
+                $("#formulario").hide(1000);
+                carrito=[];
+                console.log(carrito)
+             
             };
         })
         /* FALTA RETOCAR ALGUNAS COSAS */
@@ -294,19 +295,19 @@ function eliminar(eliminado){
                     let cantCuotas = $("#cuotas1").val();
                     $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas))                    
                 } else if ($("#cuotas2").is(':checked')){ 
-                    $("#totalCuotas").html(' ')
+                    $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas2").val();
                     $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas3").is(':checked')){ 
-                    $("#totalCuotas").html(' ')
+                    $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas3").val(); 
                     $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas4").is(':checked')){ 
-                    $("#totalCuotas").html(' ')
+                    $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas4").val();
                     $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } else if ($("#cuotas5").is(':checked')){ 
-                    $("#totalCuotas").html(' ')
+                    $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas5").val();  
                     $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                 } 
@@ -371,39 +372,79 @@ function eliminar(eliminado){
     }
 
 
-    /! AJAX !/
+    /* SIRVE PARA GRAFICAR EN EL CAMION */
+    let cantCompras=0;
+    let finalCamion=0;
+ function generarCompra (){
+  for (let i=0; i<localStorage.length;i++){
+    let clave=localStorage.key(i);
+    console.log("Clave: "+clave);
+    let valor = (localStorage.getItem(clave));
+    let ultimaCompra= (JSON.parse(valor));
+    cantCompras=cantCompras+1
+    $("#camionCompra").append(`
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion">
+            <li class="nav-item dropdown">
+            <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                ${ultimaCompra.length} Productos 
+            </a>
+            <ul id="tablaCamion${cantCompras}" class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+            </ul>
+            </li>
+        </ul>
+        `
+        );
+    for (const prodFinal of ultimaCompra){
+        finalCamion=finalCamion+prodFinal.precio
+        $("#tablaCamion"+cantCompras).append(` 
+        <li class="elementoCamion">
+            <tr class="elementoCamion" id="tablaFinalCamion">
+                <td class="elementoCamion"> <img class="imgCamion" src=${JSON.stringify(prodFinal.imgs)}></td>
+                <td class="elementoCamion"><p>${prodFinal.prod}</p></td>
+                <td class="elementoCamion"><b id=${prodFinal.precio}>$ ${prodFinal.precio}</b></td>
 
-    /* URL DE PERSONAJES DE HARRY POTTER */
-    const URLGET = "http://hp-api.herokuapp.com/api/characters"
-    const puestos=["","Front End","Jefa de diseño","Back End"]
-    console.log(puestos)
+            </tr>
+        </li>`)
+    }
+    
 
-    $("#creadores").prepend('<button class="categorias" id="btn1"> Mostrar creadores </button>');
-    $("#btn1").click(() => { 
-    
-    $.get(URLGET, function (respuesta, estado) {
-          if(estado === "success"){
-            let misDatos = respuesta;
-            let creadores = misDatos.slice(0,3)
-            let i=0;
-            for (const dato of creadores) {
-                i=i+1
-                console.log(puestos[i])
-                $("#creadores").prepend(`
-                <div class="col-md-4 col-xs-4" id="aniCrea">
-                    <img class="fotoCreadores" src=${dato.image}>
-                    <h3 class="infoCreadores">${dato.name}</h3>
-                    <p class="infoCreadores">${puestos[i]}</p>
-                </div>`
-            );
-            
-            }  
-            }
-            $("#creadores").prepend(`<h3 class="infoCreadores">Nuestros Creadores</h3> `) 
-            $("#btn1").hide(2000);
-            $("#creadores")
-            .hide(1)
-            .slideDown(2000)
-    })
-    
+};
+};
+
+
+/! AJAX !/
+
+/* URL DE PERSONAJES DE HARRY POTTER */
+const URLGET = "http://hp-api.herokuapp.com/api/characters"
+const puestos=["","Front End","Jefa de diseño","Back End"]
+console.log(puestos)
+
+$("#creadores").prepend('<button class="categorias" id="btn1"> Mostrar creadores </button>');
+$("#btn1").click(() => { 
+
+$.get(URLGET, function (respuesta, estado) {
+      if(estado === "success"){
+        let misDatos = respuesta;
+        let creadores = misDatos.slice(0,3)
+        let i=0;
+        for (const dato of creadores) {
+            i=i+1
+            console.log(puestos[i])
+            $("#creadores").prepend(`
+            <div class="col-md-4 col-xs-4" id="aniCrea">
+                <img class="fotoCreadores" src=${dato.image}>
+                <h3 class="infoCreadores">${dato.name}</h3>
+                <p class="infoCreadores">${puestos[i]}</p>
+            </div>`
+        );
+        
+        }  
+        }
+        $("#creadores").prepend(`<h3 class="infoCreadores">Nuestros Creadores</h3> `) 
+        $("#btn1").hide(2000);
+        $("#creadores")
+        .hide(1)
+        .slideDown(2000)
 })
+
+});
