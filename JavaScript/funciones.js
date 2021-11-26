@@ -593,8 +593,7 @@ const validarForm = (e) => {
             validar(expresiones.nombre,e,"nombreApellido",nombreApellido)
             let name =e.target.value
             console.log(name)
-            let nameJSON=JSON.stringify(name)
-            datosUsuario= new user (nameJSON,"hola","","","")
+            datosUsuario= new user (name,"hola","","","")
             usuarios.push(datosUsuario)
             break
         }
