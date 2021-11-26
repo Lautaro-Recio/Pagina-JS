@@ -235,14 +235,53 @@ h4 {
   list-style: none;
   font-size: 21px;
   background-color: white;
-  border: 5px #ffde59 solid;
-  margin: 10%; }
+  border: 5px #ffde59 solid; }
 
 a:hover {
   color: #ffde59; }
 
 .muestraCamion {
   padding: 5%; }
+
+/* MENU DESPLEGABLE DE USUARIO */
+.usuario {
+  position: absolute;
+  overflow: visible;
+  z-index: 10000000;
+  background-color: #ffde59;
+  width: 25%;
+  border: white 2px solid; }
+
+.desplegableUsuario {
+  text-decoration: none;
+  list-style: none;
+  background-color: #ffde59; }
+
+.inputUsuario {
+  margin: 2%;
+  width: 90%; }
+
+.imgUsuario {
+  height: 75px;
+  width: 75px;
+  border-radius: 15%; }
+
+.labelUsuario {
+  width: 100%;
+  font-size: 21px;
+  font-weight: bolder; }
+
+.formCorrecto {
+  border: 3px solid green;
+  color: green; }
+
+.formMal {
+  border: 3px solid red;
+  color: red; }
+
+.formVacio {
+  border: 3px solid black;
+  color: black; }
 
 body {
   background-color: #ffde59; }

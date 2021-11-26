@@ -73,6 +73,8 @@
 
 const buscador = document.querySelector("#datos")
 /* Fin Funcion */
+
+/* BUSCADOR */
 const buscar = () => {
     tarjetas.innerHTML=``
     const texto = buscador.value.toLowerCase();
@@ -202,7 +204,7 @@ function eliminar(eliminado){
         total.innerHTML= `Total: $ `;
         carrito=[];
         console.log(carrito);
-        localStorage.clear( );
+        localStorage.clear();
         tabla.innerHTML=` `;
         tablaBody.innerHTML=` `;
         precioCuotas=0
@@ -375,40 +377,50 @@ function eliminar(eliminado){
     /* SIRVE PARA GRAFICAR EN EL CAMION */
     let cantCompras=0;
     let finalCamion=0;
+
  function generarCompra (){
-  for (let i=0; i<localStorage.length;i++){
-    let clave=localStorage.key(i);
-    console.log("Clave: "+clave);
-    let valor = (localStorage.getItem(clave));
-    let ultimaCompra= (JSON.parse(valor));
-    cantCompras=cantCompras+1
-    $("#camionCompra").append(`
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion">
-            <li class="nav-item dropdown">
-            <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                ${ultimaCompra.length} Productos 
-            </a>
-            <ul id="tablaCamion${cantCompras}" class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+    let ultimaCompra;
+    /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
+    let nRandom= Math.floor(Math.random()*1000000)
+       
+
+    for (let i=0; i<localStorage.length;i++){
+        let clave=localStorage.key(i);
+        console.log("Clave: "+clave);
+        let valor = (localStorage.getItem(clave));
+        ultimaCompra= (JSON.parse(valor));
+        cantCompras=cantCompras+1;
+        
+        /* SE GRAFICA EL MENU DESPLEGABLE */
+        $("#camionCompra").append(`
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion">
+                <li class="nav-item dropdown">
+                <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                   Numero de compra: ${nRandom} 
+                </a>
+                <ul id="tablaCamion${nRandom}" class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+                </ul>
+                </li>
             </ul>
-            </li>
-        </ul>
-        `
-        );
-    for (const prodFinal of ultimaCompra){
-        finalCamion=finalCamion+prodFinal.precio
-        $("#tablaCamion"+cantCompras).append(` 
-        <li class="elementoCamion">
-            <tr class="elementoCamion" id="tablaFinalCamion">
-                <td class="elementoCamion"> <img class="imgCamion" src=${JSON.stringify(prodFinal.imgs)}></td>
-                <td class="elementoCamion"><p>${prodFinal.prod}</p></td>
-                <td class="elementoCamion"><b id=${prodFinal.precio}>$ ${prodFinal.precio}</b></td>
+            `
+            );
 
-            </tr>
-        </li>`)
+
+            /* ACA SE AGREGAN LOS PRODS AL MENU */
+        for (const prodFinal of ultimaCompra){
+            finalCamion=finalCamion+prodFinal.precio
+            $("#tablaCamion"+nRandom).append(` 
+            <li class="elementoCamion">
+                <tr class="elementoCamion" id="tablaFinalCamion">
+                    <td class="elementoCamion"> <img class="imgCamion" src=${JSON.stringify(prodFinal.imgs)}></td>
+                    <td class="elementoCamion"><p>${prodFinal.prod}</p></td>
+                    <td class="elementoCamion"><b id=${prodFinal.precio}>$ ${prodFinal.precio}</b></td>
+
+                </tr>
+            </li>`);
+        };
+        
     }
-    
-
-};
 };
 
 
@@ -448,3 +460,163 @@ $.get(URLGET, function (respuesta, estado) {
 })
 
 });
+
+
+
+
+/* SECCION USUARIO */
+
+const inputs = ["nombreApellido","nombreUsuario","gmail","clave","claveVerificada"]
+const labels =  ["Nombre y apellido","Usuario", "Correo", "Contraseña", "Reescriba su contraseña"]
+const places = ["Nombre completo","Ingrese un nombre de usuario","Ingrese su correo","Contraseña","Reescriba su contraseña"]
+
+$("#usuarioBoton").click(function(){
+    
+    $("#usuario").html(``)
+    $("#usuario").append(`
+    <a href="#" role="button" id="usuarioBoton" aria-expanded="false"><img class="imgUsuario" src="assets/images/usuario.jpg" alt="usuario"></a>
+    <ul class="usuario" aria-labelledby="offcanvasNavbarDropdown">
+    <li class="desplegableUsuario">
+    <form id ="formularioUsuario" action="">
+
+        
+    </form>
+    </li>
+    </ul>`)
+    let i=0;
+    $("#labelUsuario").html(``)
+    for(const inputsNames of inputs){ 
+        
+        $("#formularioUsuario").append(`
+        <label for="" id="labelUsuario" class="labelUsuario">
+            ${labels[i]}           
+            <input type="text"  placeholder=${places[i]} class="inputUsuario" name = ${inputsNames} id="${inputsNames}"></input>
+
+        </label>`)
+        i = i+1;
+    }
+    $("#formularioUsuario").append(`
+        <button  id="registro"> Registrarse </button>
+        <button type="reset">Limpiar </button>
+
+    `)
+    
+
+    
+    
+    const inputsSelec = document.querySelectorAll("#formularioUsuario input")
+
+    /* Funcion que toma los inputs */
+    inputsSelec.forEach((input) => {
+        input.addEventListener("keyup", validarForm)
+    });
+
+})
+const form = document.getElementById("formularioUsuario")
+/* Expresiones */
+const expresiones = {
+    nombre: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
+	usuario: /^[a-zA-Z0-9\_\-]{4,16}$/, // Letras, numeros, guion y guion_bajo
+	contra: /^.{4,12}$/, // 4 a 12 digitos.
+	gmail: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+}
+
+/* Los inputs estan definidos como false al principio para que no pueda ser enviado el formulario de una */
+const inputsLlenados=[
+    nombreApellido = false,
+    nombreUsuario = false,
+    gmail = false,
+    clave = false,
+    claveVerificada = false,
+]
+
+const validarForm = (e) => {
+    switch (e.target.name) {
+        case "nombreApellido":{
+            
+            $("#labelUsuario").append(`<p></p>`)
+            validar(expresiones.nombre,e,"nombreApellido",nombreApellido)
+
+            break
+        }
+        case "nombreUsuario":{
+            
+            $("#labelUsuario").append(`<p></p>`)
+            validar(expresiones.usuario,e,"nombreUsuario")
+
+            break
+        }
+        case "gmail":{
+            validar(expresiones.gmail,e,"gmail")
+
+
+            break
+        }
+        case "clave":{
+            validar(expresiones.contra,e,"clave")
+
+        }
+        case "claveVerificada":{
+
+            if (claveVerificada.value !== clave.value ) {
+               
+                /* Validacion Incorrecta */
+                document.getElementById("claveVerificada").classList.remove("formVacio")
+                document.getElementById("claveVerificada").classList.remove("formCorrecto")
+                document.getElementById("claveVerificada").classList.add("formMal") 
+
+            }else if (claveVerificada.value =="") {
+                /* Validacio Vacia */
+                console.log("Estoy vacio")
+                document.getElementById("claveVerificada").classList.remove("formCorrecto")
+                document.getElementById("claveVerificada").classList.remove("formMal")
+                document.getElementById("claveVerificada").classList.add("formVacio")
+            }else{
+
+                /* Validacion correcta */
+                document.getElementById("claveVerificada").classList.remove("formMal")
+                document.getElementById("claveVerificada").classList.remove("formVacio")
+                document.getElementById("claveVerificada").classList.add("formCorrecto")
+   
+            }
+           
+
+            break
+        }
+    }
+}
+
+/* FUNCION DE VALIDACION */
+
+function validar (expresion,evento,campos){
+    if (expresion.test(evento.target.value)){
+        /* Validacion correcta */
+        document.getElementById(campos).classList.remove("formMal");
+        document.getElementById(campos).classList.remove("formVacio");
+        document.getElementById(campos).classList.add("formCorrecto");
+        inputsLlenados[campos] = true;
+        console.log(inputsLlenados[campos])
+    }else if (evento.target.value == "") {
+        /* Validacio Vacia */
+        console.log("Estoy vacio")
+        document.getElementById(campos).classList.remove("formCorrecto")
+        document.getElementById(campos).classList.remove("formMal")
+        document.getElementById(campos).classList.add("formVacio")
+        inputsLlenados[campos]=false
+        console.log(inputsLlenados[campos])
+
+    } else {
+        /* Validacion Incorrecta */
+        document.getElementById(campos).classList.remove("formVacio")
+        document.getElementById(campos).classList.remove("formCorrecto")
+        document.getElementById(campos).classList.add("formMal") 
+        inputsLlenados[campos]=false
+        console.log(inputsLlenados[campos])
+
+    }
+}
+
+/* FALTA LA VALIDACION FINAL DEL BOTON DE REGISTRO */
+
+
+
