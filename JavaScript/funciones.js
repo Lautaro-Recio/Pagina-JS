@@ -144,11 +144,14 @@ function addToCart(productoNuevo) {
     if (encontrado == undefined) {
         let productoAAgregar = new productoCarrito(productoNuevo);
         carrito.push(productoAAgregar);
-        Swal.fire(
-            'Nuevo producto agregado al carro',
-            productoNuevo.prod,
-            'success'
-        );
+        Swal.fire({
+            icon: 'success',
+            title: 'Nuevo producto agregado al carro',
+            text: productoNuevo.prod,
+            showConfirmButton: false,
+            timer: 1500
+          })
+       
         $(tablaBody).append(`
         <tr id=${JSON.stringify(productoNuevo.id)}>
             <td class=""> ID=${productoNuevo.id}</td>
@@ -469,6 +472,8 @@ $.get(URLGET, function (respuesta, estado) {
 const inputs = ["nombreApellido","nombreUsuario","gmail","clave","claveVerificada"]
 const labels =  ["Nombre y apellido","Usuario", "Correo", "Contraseña", "Reescriba su contraseña"]
 const places = ["Nombre completo","Ingrese un nombre de usuario","Ingrese su correo","Contraseña","Reescriba su contraseña"]
+/* ACA VAN A IR LOS NUEVOS USUARIOS */
+let usuarios=[]
 
 $("#usuarioBoton").click(function(){
     
@@ -496,12 +501,11 @@ $("#usuarioBoton").click(function(){
         i = i+1;
     }
     $("#formularioUsuario").append(`
-        <button  id="registro"> Registrarse </button>
-        <button type="reset">Limpiar </button>
+        <button  type="submit" id="registro"> Registrarse </button>
+        <button type="reset" >Limpiar </button>
 
     `)
     
-
     
     
     const inputsSelec = document.querySelectorAll("#formularioUsuario input")
@@ -511,8 +515,47 @@ $("#usuarioBoton").click(function(){
         input.addEventListener("keyup", validarForm)
     });
 
+    const form = document.getElementById("formularioUsuario")
+    /* Funcion que toma el boton de envio */
+
+    /* USUARIO REGISTRADO? */
+
+    let uRegistrado = false
+
+    form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+      
+        if ((inputsLlenados.nombreApellido === true ) && (inputsLlenados.nombreUsuario === true ) && (inputsLlenados.gmail === true) && (inputsLlenados.clave === true ) && (inputsLlenados.claveVerificada === true )){
+            swal.fire({
+                icon: 'success',
+                title: 'Se a registrado con exito!',
+            });
+            /* Creacion de usuarios */
+            usuarios.push(usuarioTerminado)
+            console.log(usuarios)
+            localStorage.setItem("usuario",JSON.stringify(usuarios))
+
+            
+
+            /* resetea el form */
+            form.reset()
+
+            uRegistrado = true
+
+        }else{
+            
+            swal.fire({
+
+                icon: 'error',
+                title: 'Rellene los campos faltantes',
+
+            });
+            
+        }
+    })
+
 })
-const form = document.getElementById("formularioUsuario")
+
 /* Expresiones */
 const expresiones = {
     nombre: /^[a-zA-ZÀ-ÿ\s]{1,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -529,25 +572,43 @@ const inputsLlenados=[
     clave = false,
     claveVerificada = false,
 ]
+class user {
+    constructor(nC,nDU,c,c1,c2) {
+        this.nombreCompleto = nC.nombre;
+        this.nombreDeUsuario = nDU.nombreDeUsuario;
+        this.correo = c.correo;
+        this.contra1 = c1.contra1;
+        this.contra2 = c2.contra2;
+
+    }
+}
+
+
 
 const validarForm = (e) => {
+    let datosUsuario
     switch (e.target.name) {
         case "nombreApellido":{
-            
-            $("#labelUsuario").append(`<p></p>`)
-            validar(expresiones.nombre,e,"nombreApellido",nombreApellido)
 
+            validar(expresiones.nombre,e,"nombreApellido",nombreApellido)
+            let name =e.target.value
+            console.log(name)
+            let nameJSON=JSON.stringify(name)
+            datosUsuario= new user (nameJSON,"hola","","","")
+            usuarios.push(datosUsuario)
             break
         }
         case "nombreUsuario":{
             
-            $("#labelUsuario").append(`<p></p>`)
             validar(expresiones.usuario,e,"nombreUsuario")
+
 
             break
         }
         case "gmail":{
+
             validar(expresiones.gmail,e,"gmail")
+
 
 
             break
@@ -555,68 +616,86 @@ const validarForm = (e) => {
         case "clave":{
             validar(expresiones.contra,e,"clave")
 
+
         }
         case "claveVerificada":{
+            
+            const clave1 = document.getElementById("clave")
+            const clave2 = document.getElementById("claveVerificada")
 
-            if (claveVerificada.value !== clave.value ) {
-               
+            if (clave2.value !== clave1.value ) {
+
                 /* Validacion Incorrecta */
                 document.getElementById("claveVerificada").classList.remove("formVacio")
                 document.getElementById("claveVerificada").classList.remove("formCorrecto")
-                document.getElementById("claveVerificada").classList.add("formMal") 
-
-            }else if (claveVerificada.value =="") {
+                document.getElementById("claveVerificada").classList.add("formMal")
+                inputsLlenados.claveVerificada = false;
+                    
+ 
+            }else if (clave2.value == " ") {
                 /* Validacio Vacia */
                 console.log("Estoy vacio")
                 document.getElementById("claveVerificada").classList.remove("formCorrecto")
                 document.getElementById("claveVerificada").classList.remove("formMal")
                 document.getElementById("claveVerificada").classList.add("formVacio")
-            }else{
+                inputsLlenados.claveVerificada = false;
+                
+
+            }else if (clave2.value === clave1.value ){
 
                 /* Validacion correcta */
                 document.getElementById("claveVerificada").classList.remove("formMal")
                 document.getElementById("claveVerificada").classList.remove("formVacio")
                 document.getElementById("claveVerificada").classList.add("formCorrecto")
+                inputsLlenados.claveVerificada = true;
+
+
+
    
             }
-           
+            
 
             break
         }
     }
+    console.log(datosUsuario)
+    console.log(usuarios)
 }
+
+
+
 
 /* FUNCION DE VALIDACION */
 
 function validar (expresion,evento,campos){
     if (expresion.test(evento.target.value)){
         /* Validacion correcta */
+
         document.getElementById(campos).classList.remove("formMal");
         document.getElementById(campos).classList.remove("formVacio");
         document.getElementById(campos).classList.add("formCorrecto");
         inputsLlenados[campos] = true;
-        console.log(inputsLlenados[campos])
+       
+
     }else if (evento.target.value == "") {
         /* Validacio Vacia */
         console.log("Estoy vacio")
         document.getElementById(campos).classList.remove("formCorrecto")
         document.getElementById(campos).classList.remove("formMal")
         document.getElementById(campos).classList.add("formVacio")
-        inputsLlenados[campos]=false
-        console.log(inputsLlenados[campos])
+        inputsLlenados[campos]=false;
 
     } else {
         /* Validacion Incorrecta */
         document.getElementById(campos).classList.remove("formVacio")
         document.getElementById(campos).classList.remove("formCorrecto")
         document.getElementById(campos).classList.add("formMal") 
-        inputsLlenados[campos]=false
-        console.log(inputsLlenados[campos])
+        inputsLlenados[campos]=false;
 
     }
 }
 
-/* FALTA LA VALIDACION FINAL DEL BOTON DE REGISTRO */
+
 
 
 
