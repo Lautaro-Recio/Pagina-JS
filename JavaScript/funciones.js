@@ -574,11 +574,11 @@ const inputsLlenados=[
 ]
 class user {
     constructor(nC,nDU,c,c1,c2) {
-        this.nombreCompleto = nC.nombre;
-        this.nombreDeUsuario = nDU.nombreDeUsuario;
-        this.correo = c.correo;
-        this.contra1 = c1.contra1;
-        this.contra2 = c2.contra2;
+        this.nombreCompleto = nC;
+        this.nombreDeUsuario = nDU;
+        this.correo = c;
+        this.contra1 = c1;
+        this.contra2 = c2;
 
     }
 }
