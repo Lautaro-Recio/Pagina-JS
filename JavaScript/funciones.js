@@ -220,7 +220,7 @@ function eliminar(eliminado){
         total.innerHTML= `Total: $ `;
         carrito=[];
         console.log(carrito);
-        localStorage.clear();
+        localStorage.removeItem("cart");
         tabla.innerHTML=` `;
         tablaBody.innerHTML=` `;
         precioCuotas=0
@@ -239,19 +239,6 @@ function eliminar(eliminado){
         $("#formulario").append(`
             <form id="miForm">
                 <div class="col-md-12 col-xs-12">
-                    <label class="label1">
-                        <h4>Ingrese sus datos</h4>
-                        <input type="text" class="textForm" id="nombre" placeholder="Nombre...">
-                        <br>
-                        <input type="text" class="textForm" id="apellido" placeholder="Apellido...">
-                        <br> 
-                        <input type="text" class="textForm" id="direccion" placeholder="Direccion...">
-                        <br>
-                        <input type="text" class="textForm" id="gmail" placeholder="Gmail...">
-                        <br>
-                        <input type="text" class="textForm" id="nro" placeholder="Nro de contacto...">
-                        <p id="faltantes" class="faltantes"></p>
-                    </label>
                 
                     <label class="label2">
                         <h4>Seleccione su plan de pago</h4>
@@ -272,7 +259,6 @@ function eliminar(eliminado){
                     <br>
                 <label class="label3"> 
                     <button class="botonesForm" id="enviar" type="submit">Enviar </button>
-                    <button class="botonesForm" type="reset">Limpiar </button>
                 </label>
             </form>
         `);
@@ -280,18 +266,9 @@ function eliminar(eliminado){
 
         $("#miForm").submit(function(e){
             e.preventDefault();
-            /* VALIDAR LOS INPUT TEXT */
-            let nom=$("#nombre").val();
-            let ape=$("#apellido").val();
-            let direccion=$("#direccion").val();
-            let mail=$("#gmail").val();
-            let nro=$("#nro").val();
-            
+           
             /* VALIDACION SI ESTAN VACIOS LOS INPUTS */
-            if ((nom === "") || (ape === "") || (mail === "") || (direccion === "") || (nro === "")) {
-                $("#faltantes").append("Rellene los campos faltantes");
-            }else{
-                console.log(nom,ape,direccion,mail,nro)
+            
                 Swal.fire(
                     $("#nombre").val(),
                     '¡Tu pedido esta en camino!',
@@ -303,8 +280,8 @@ function eliminar(eliminado){
                 carrito=[];
                 console.log(carrito)
              
-            };
         })
+        
         /* FALTA RETOCAR ALGUNAS COSAS */
         $(document).ready(function(){  
   
@@ -487,7 +464,15 @@ const inputs = ["nombreApellido","nombreUsuario","gmail","direccion","clave","cl
 const labels =  ["Nombre y apellido","Usuario", "Correo","direccion", "Contraseña", "Reescriba su contraseña"];
 const places = ["Nombre completo","Ingrese un nombre de usuario","Ingrese su correo","direccion","Contraseña","Reescriba su contraseña"];
 /* ACA VAN A IR LOS NUEVOS USUARIOS */
+let usuarioRegistrado = localStorage.getItem("usuario");
+let usuarioRegistradoJSON= JSON.parse(usuarioRegistrado);
 let usuarios=[];
+if (usuarioRegistrado === null){
+    console.log("no hay usuarios")
+}else{
+    usuarios=usuarioRegistradoJSON;
+}
+
 
 
 $("#usuarioBoton").click(function(){
@@ -496,93 +481,163 @@ $("#usuarioBoton").click(function(){
         <li class="desplegableUsuario">
         <form id ="formularioUsuario" action="">
             <label class="labelUsuario">Correo Electronico
-                <input type="text" placeholder="correo..." class="inputUsuario" name ="iniciar" id="iniciar"></input>
+                <input type="text" placeholder="correo..." class="inputUsuario" name ="gmail" id="gmail"></input>
             </label>
             <label class="labelUsuario">Contraseña
-                <input type="text" placeholder="contraseña..." class="inputUsuario" name ="iniciar" id="iniciar"></input>
+                <input type="text" placeholder="contraseña..." class="inputUsuario" name ="clave" id="clave"></input>
             </label>
             <button id="registrarse"> No tengo cuenta </button>
+            <button type="submit" id="iniciar"> iniciar </button>
+
         </form>
         </li>
         </ul>`
     )
-    
+    iniciar()
     $("#registrarse").click(function(){
             
-            let i=0;
-            $("#formularioUsuario").html(``);
-            for(const inputsNames of inputs){ 
+        let i=0;
+        $("#formularioUsuario").html(``);
+        for(const inputsNames of inputs){ 
                 
-                $("#formularioUsuario").append(`
-                <label for="" id="labelUsuario" class="labelUsuario">
-                    ${labels[i]}           
-                    <input type="text"  placeholder=${places[i]} class="inputUsuario" name = ${inputsNames} id="${inputsNames}"></input>
-    
-                </label>`)
-                i = i+1;
-            }
             $("#formularioUsuario").append(`
-                <button  type="submit" id="registro"> Registrarse </button>
-                <button type="reset" >Limpiar </button>
+            <label for="" id="labelUsuario" class="labelUsuario">
+                ${labels[i]}           
+                <input type="text"  placeholder=${places[i]} class="inputUsuario" name = ${inputsNames} id="${inputsNames}"></input>
     
-            `);
-            
+            </label>`)
+            i = i+1;
+        }
+        $("#formularioUsuario").append(`
+            <button  type="submit" id="registro"> Registrarse </button>
+            <button type="reset" >Limpiar </button>
+    
+        `);
+        comprobar()
+    });
+    
         
-            
-            
-            const inputsSelec = document.querySelectorAll("#formularioUsuario input");
-    
-            /* Funcion que toma los inputs */
-            inputsSelec.forEach((input) => {
-                input.addEventListener("keyup", validarForm);
-            });
-    
-            const form = document.getElementById("formularioUsuario");
-            /* Funcion que toma el boton de envio */
-    
-            /* USUARIO REGISTRADO? */
-    
-            
-    
-            form.addEventListener("submit",(e)=>{
-                e.preventDefault();
-            
-                if ((inputsLlenados.nombreApellido === true ) && (inputsLlenados.nombreUsuario === true ) && (inputsLlenados.gmail === true) && (inputsLlenados.direccion === true ) && (inputsLlenados.clave === true ) && (inputsLlenados.claveVerificada === true )){
-                    swal.fire({
-                        icon: 'success',
-                        title: 'Se a registrado con exito!',
-                    });
-                    /* Creacion de usuarios */
-                    datosUsuario= new user (valorName,valorUser,valorCorreo,valorClave,valorClaveVerificada);
-                    usuarios.push(datosUsuario);
-                    console.log(usuarios);
-                    localStorage.setItem("usuario",JSON.stringify(usuarios));
-    
-                    $("#ulDesplegable").hide(2000);
-                    
-                    uRegistrado=true;
-    
-                    /* resetea el form */
-                    form.reset();
-    
-    
-                }else{
-                    
-                    swal.fire({
-    
-                        icon: 'error',
-                        title: 'Rellene los campos faltantes',
-    
-                    });
-                
-                };
-        });
-    
-    })
 
    
 
 });
+function iniciar(){
+
+    const inputsSelec = document.querySelectorAll("#formularioUsuario input");
+        
+                /* Funcion que toma los inputs */
+                inputsSelec.forEach((input) => {
+                    input.addEventListener("keyup", validarForm);
+                });
+        
+                const form = document.getElementById("formularioUsuario");
+                /* Funcion que toma el boton de envio */
+                
+                form.addEventListener("submit",(e)=>{
+                    e.preventDefault();
+                    let usuarioRegistrado = localStorage.getItem("usuario")
+                    let usuarioRegistradoJSON= JSON.parse(usuarioRegistrado)
+                    console.log(usuarioRegistradoJSON)
+                    /* TOMA DE VALORES */
+                    let valorCorreo;
+                    let valorContra;
+                    valorContra=$("#clave").val()
+                    valorCorreo=$("#gmail").val()
+                    let correoDeRegistro;
+                    let contraDeRegistro;
+                    /* PRUEBA PARA VERIFICAR USUARIOS */
+
+
+           
+                    for (const user of usuarioRegistradoJSON){
+                        correoDeRegistro=user.correo
+                        contraDeRegistro=user.contra1
+                        console.log(correoDeRegistro)
+                        console.log(contraDeRegistro)
+                        if ((valorCorreo === correoDeRegistro) && (valorContra === contraDeRegistro )){
+                            swal.fire({
+                                icon: 'success',
+                                title: 'Has iniciado sesion con exito!',
+                            });
+                            /* Creacion de usuarios */
+            
+                            /* resetea el form */
+                            form.reset();
+                            
+                            uRegistrado=true;
+                            
+                            break
+            
+                        }else{
+                            
+                            swal.fire({
+            
+                                icon: 'error',
+                                title: 'Rellene los campos faltantes',
+            
+                            });
+                        
+                        }
+                    }
+
+                    
+                    
+
+                   
+        })
+}
+/* COMPROBACION DE INPUTS */
+function comprobar(){
+    
+    const inputsSelec = document.querySelectorAll("#formularioUsuario input");
+        
+                /* Funcion que toma los inputs */
+                inputsSelec.forEach((input) => {
+                    input.addEventListener("keyup", validarForm);
+                });
+        
+                const form = document.getElementById("formularioUsuario");
+                /* Funcion que toma el boton de envio */
+                
+                form.addEventListener("submit",(e)=>{
+                    e.preventDefault();
+                
+                    if ((inputsLlenados.nombreApellido === true ) && (inputsLlenados.nombreUsuario === true ) && (inputsLlenados.gmail === true) && (inputsLlenados.direccion === true ) && (inputsLlenados.clave === true ) && (inputsLlenados.claveVerificada === true )){
+                        swal.fire({
+                            icon: 'success',
+                            title: 'Se a registrado con exito!',
+                        });
+                        /* Creacion de usuarios */
+                        datosUsuario= new user (valorName,valorUser,valorCorreo,valorClave,valorClaveVerificada);
+
+                    
+                            usuarios.push(datosUsuario);
+                            console.log(usuarios);
+                       
+                            
+                        
+                        localStorage.setItem("usuario",JSON.stringify(usuarios));
+        
+                        $("#ulDesplegable").hide(2000);
+                        
+                        uRegistrado=true;
+        
+                        /* resetea el form */
+                        form.reset();
+        
+        
+                    }else{
+                        
+                        swal.fire({
+        
+                            icon: 'error',
+                            title: 'Rellene los campos faltantes',
+        
+                        });
+                    
+                    };
+        })
+}
 
 /* Expresiones */
 const expresiones = {
