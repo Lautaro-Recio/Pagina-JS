@@ -83,6 +83,26 @@ footer {
 .elementoTablas {
   vertical-align: middle; }
 
+.botonLink {
+  text-decoration: none;
+  font-size: 21px;
+  color: black;
+  font-weight: bolder;
+  width: 100%; }
+
+.divBotonNo {
+  text-align: center;
+  border-left: #aaaaaa 1px solid;
+  border-right: #aaaaaa 1px solid;
+  border-bottom: #aaaaaa 1px solid; }
+
+.divBoton {
+  text-align: center;
+  background-color: #d6d6d6;
+  border-left: #aaaaaa 1px solid;
+  border-right: #aaaaaa 1px solid;
+  border-bottom: #aaaaaa 1px solid; }
+
 /* cards de productos */
 .prods {
   margin: 4% 14%; }

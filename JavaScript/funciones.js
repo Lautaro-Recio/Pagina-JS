@@ -4,7 +4,7 @@
 
     /* ESCONDE EL BOTON COMPRAR */
     $("#comprar").hide()
-    
+    $("#borrar").hide()
    
 
 
@@ -77,7 +77,7 @@ const buscador = document.querySelector("#datos")
 
 /* BUSCADOR */
 const buscar = () => {
-    tarjetas.innerHTML=``
+    tarjetas.inner``
     const texto = buscador.value.toLowerCase();
     for( let producto of productos){
         let nombre = producto.prod.toLowerCase();
@@ -144,34 +144,40 @@ let cantidad;
     function addToCart(productoNuevo) {
         if (uRegistrado==true){
         let encontrado = carrito.find(prod => prod.id == productoNuevo.id);
-        if (encontrado == undefined) {
-            let productoAAgregar = new productoCarrito(productoNuevo);
-            carrito.push(productoAAgregar);
-            Swal.fire({
-                icon: 'success',
-                title: 'Nuevo producto agregado al carro',
-                text: productoNuevo.prod,
-                showConfirmButton: false,
-                timer: 1500
-            })
-        
-            $(tablaBody).append(`
-            <tr id=${JSON.stringify(productoNuevo.id)}>
-                <td class=""> ID=${productoNuevo.id}</td>
-                <td class="elementoTablas"><img class="compras" src=${productoNuevo.imgs}></td>
-                <td class="elementoTablas">${productoNuevo.prod}</td>
-                <td class="elementoTablas"><b id=${productoNuevo.precio}>$ ${productoNuevo.precio}</b></td>
-                <td class="elementoTablas"><input type="number" value=1 id="${productoNuevo.prod}"></input></td>
-                <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(productoNuevo.id)})>x</button></td>
-            <tr>`);
-                $(tabla).append(tablaBody)
-                $("#carro").append(tabla)
-                precioCuotas=precioCuotas+productoNuevo.precio
-                total.innerHTML= `Total: $${precioCuotas}`;
-                posicion = carrito.findIndex(p => p.id == productoNuevo.id);
-                /! ANIMACIONES CONCATENADAS!/
-                $("#comprar").show(2000)
-                
+            if (encontrado == undefined) {
+                let productoAAgregar = new productoCarrito(productoNuevo);
+                carrito.push(productoAAgregar);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Nuevo producto agregado al carro',
+                    text: productoNuevo.prod,
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            
+                $(tablaBody).append(`
+                <tr id=${JSON.stringify(productoNuevo.id)}>
+                    <td class=""> ID=${productoNuevo.id}</td>
+                    <td class="elementoTablas"><img class="compras" src=${productoNuevo.imgs}></td>
+                    <td class="elementoTablas">${productoNuevo.prod}</td>
+                    <td class="elementoTablas"><b id=${productoNuevo.precio}>$ ${productoNuevo.precio}</b></td>
+                    <td class="elementoTablas"><input type="number" value=1 id="${productoNuevo.prod}"></input></td>
+                    <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(productoNuevo.id)})>x</button></td>
+                <tr>`);
+                    $(tabla).append(tablaBody)
+                    $("#carro").append(tabla)
+                    precioCuotas=precioCuotas+productoNuevo.precio
+                    total.innerHTML= `Total: $${precioCuotas}`;
+                    posicion = carrito.findIndex(p => p.id == productoNuevo.id);
+                    /! ANIMACIONES CONCATENADAS!/
+                    $("#comprar").show(2000)
+                    $("#borrar").show(2000)
+                    $(".muestraCamion").hide(1000)
+                    $("#tabla").show(1000)
+                    document.getElementById("divCamion").classList.add("divBotonNo");
+                    document.getElementById("divCamion").classList.remove("divBoton");
+                    document.getElementById("divProds").classList.remove("divBotonNo");
+                    document.getElementById("divProds").classList.add("divBoton");
             } else {
                 console.log(carrito)
                 posicion = carrito.findIndex(p => p.id == productoNuevo.id);
@@ -183,12 +189,11 @@ let cantidad;
                 precio.innerText=`$${productoNuevo.precio*cantidad}`;
             }
             localStorage.setItem("cart",JSON.stringify(carrito))
-    }
-    else if (uRegistrado==false){
+    }else if ((uRegistrado==false) || (uRegistrado=="repetido")) {
         swal.fire({
     
             icon: 'error',
-            title: 'Debe registrarse como usuario',
+            title: 'Debe iniciar sesion!',
     
         });
         
@@ -225,13 +230,15 @@ function eliminar(eliminado){
         tablaBody.innerHTML=` `;
         precioCuotas=0
         $("#comprar").hide(2000)
-       
+        $("#borrar").hide(2000)
+
         
     }
 
     /* BOTON DE COMPRAR / CON JQUERY */
 
     $("#comprar").click( function ()
+    
     {      
         $("#formulario").html(``);
         $("#formulario").show(1000)
@@ -259,6 +266,7 @@ function eliminar(eliminado){
                     <br>
                 <label class="label3"> 
                     <button class="botonesForm" id="enviar" type="submit">Enviar </button>
+                    <button class="botonCarro" id="borrar">Vaciar carrito</button>
                 </label>
             </form>
         `);
@@ -372,6 +380,7 @@ function eliminar(eliminado){
     let cantCompras=0;
     let finalCamion=0;
 
+
  function generarCompra (){
     let ultimaCompra;
     /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
@@ -380,14 +389,13 @@ function eliminar(eliminado){
 
     for (let i=0; i<localStorage.length;i++){
         let clave=localStorage.key(i);
-        console.log("Clave: "+clave);
-        let valor = (localStorage.getItem(clave));
+        let valor = (localStorage.getItem("cart"));
         ultimaCompra= (JSON.parse(valor));
         cantCompras=cantCompras+1;
         
         /* SE GRAFICA EL MENU DESPLEGABLE */
-        $("#camionCompra").append(`
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion">
+        $("#carro").append(`
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion" id="compraCamion">
                 <li class="nav-item dropdown">
                 <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                    Numero de compra: ${nRandom} 
@@ -398,8 +406,7 @@ function eliminar(eliminado){
             </ul>
             `
             );
-
-
+        $(".muestraCamion").hide()
             /* ACA SE AGREGAN LOS PRODS AL MENU */
         for (const prodFinal of ultimaCompra){
             finalCamion=finalCamion+prodFinal.precio
@@ -416,9 +423,29 @@ function eliminar(eliminado){
         
     };
 };
+/* MOSTRAR COMPRAS EN SECCION CARRITO*/
+$("#camion").click(function(){
+    $(".muestraCamion").show(1000)
+    $("#tabla").hide(1000)
+    document.getElementById("divProds").classList.add("divBotonNo");
+    document.getElementById("divProds").classList.remove("divBoton");
+    document.getElementById("divCamion").classList.remove("divBotonNo");
+    document.getElementById("divCamion").classList.add("divBoton");
+})
+/* MOSTRAR PRODUCTOS EN SECCION CARRITO */
+$("#mostrarProductos").click(function(){
+    $(".muestraCamion").hide(1000)
+    $("#tabla").show(1000)
+    document.getElementById("divCamion").classList.add("divBotonNo");
+    document.getElementById("divCamion").classList.remove("divBoton");
+    document.getElementById("divProds").classList.remove("divBotonNo");
+    document.getElementById("divProds").classList.add("divBoton");
+    
+})
 
 
-/! AJAX !/
+
+/* AJAX */
 
 /* URL DE PERSONAJES DE HARRY POTTER */
 const URLGET = "http://hp-api.herokuapp.com/api/characters";
@@ -474,116 +501,148 @@ if (usuarioRegistrado === null){
 }
 
 
+/* TOMA EL NOMBRE DE USUARIO */
+let nombreUsuario;
 
 $("#usuarioBoton").click(function(){
-    $("#usuario").append(`
-        <ul class="usuario" id="ulDesplegable" aria-labelledby="offcanvasNavbarDropdown">
-        <li class="desplegableUsuario">
-        <form id ="formularioUsuario" action="">
-            <label class="labelUsuario">Correo Electronico
-                <input type="text" placeholder="correo..." class="inputUsuario" name ="gmail" id="gmail"></input>
-            </label>
-            <label class="labelUsuario">Contraseña
-                <input type="text" placeholder="contraseña..." class="inputUsuario" name ="clave" id="clave"></input>
-            </label>
-            <button id="registrarse"> No tengo cuenta </button>
-            <button type="submit" id="iniciar"> iniciar </button>
 
-        </form>
-        </li>
-        </ul>`
-    )
-    iniciar()
-    $("#registrarse").click(function(){
-            
-        let i=0;
-        $("#formularioUsuario").html(``);
-        for(const inputsNames of inputs){ 
-                
-            $("#formularioUsuario").append(`
-            <label for="" id="labelUsuario" class="labelUsuario">
-                ${labels[i]}           
-                <input type="text"  placeholder=${places[i]} class="inputUsuario" name = ${inputsNames} id="${inputsNames}"></input>
-    
-            </label>`)
-            i = i+1;
-        }
-        $("#formularioUsuario").append(`
-            <button  type="submit" id="registro"> Registrarse </button>
-            <button type="reset" >Limpiar </button>
-    
-        `);
-        comprobar()
-    });
-    
+    if (uRegistrado ===false){
+        $("#ulDesplegable").html('');
+        $("#usuario").append(`
+            <ul class="usuario" id="ulDesplegable" aria-labelledby="offcanvasNavbarDropdown">
+            <li class="desplegableUsuario">
+            <form id ="formularioUsuario" action="">
+                <label class="labelUsuario">Correo Electronico
+                    <input type="text" placeholder="correo..." class="inputUsuario" name ="gmail" id="gmail"></input>
+                </label>
+                <label class="labelUsuario">Contraseña
+                    <input type="text" placeholder="contraseña..." class="inputUsuario" name ="clave" id="clave"></input>
+                </label>
+                <button id="registrarse"> No tengo cuenta </button>
+                <button type="submit" id="iniciar"> iniciar </button>
+            </form>
+            </li>
+            </ul>`
+        )
+        iniciar()
+
+    } else if(uRegistrado ==="repetido"){
+        $("#ulDesplegable").html(``);
+        $("#ulDesplegable").show(1000);
+        $("#ulDesplegable").append(`
+            <li class="desplegableUsuario">
+                <form id ="formularioUsuario" action="">
+                    <label class="labelUsuario">Correo Electronico
+                        <input type="text" placeholder="correo..." class="inputUsuario" name ="gmail" id="gmail"></input>
+                    </label>
+                    <label class="labelUsuario">Contraseña
+                        <input type="text" placeholder="contraseña..." class="inputUsuario" name ="clave" id="clave"></input>
+                    </label>
+                    <button id="registrarse"> No tengo cuenta </button>
+                    <button type="submit" id="iniciar"> iniciar </button>
+                </form>
+            </li>
+        `)
+        iniciar()
+    }else {
+        /* MENU DE USUARIO */
+        $("#formularioUsuario").html(' ');
+        $("#ulDesplegable").show(1000)  
+        console.log("HAY QUE HACER INICIO DE SESION")
         
+        $("#formularioUsuario").append(`
+            <p>Hola ${nombreUsuario}!</p>
+            <a type="button" id="datos">Datos de la cuenta</a>
+            <a type="button" id="cerrar">Cerrar sesion</a>
 
-   
+        `)
+        /* CERRAR SESION */
+        $("#cerrar").click(function(){
+            uRegistrado="repetido"
+            $("#ulDesplegable").hide(1000);
+            vaciarCarrito()
+        })
+    }
+    
+
+    /* FUNCION DE REGISTRO */
+        $("#registrarse").click(function(){
+                    
+            let i=0;
+            $("#formularioUsuario").html(``);
+            for(const inputsNames of inputs){ 
+                    
+                $("#formularioUsuario").append(`
+                <label for="" id="labelUsuario" class="labelUsuario">
+                    ${labels[i]}           
+                    <input type="text"  placeholder=${places[i]} class="inputUsuario" name = ${inputsNames} id="${inputsNames}"></input>
+
+                </label>`)
+                i = i+1;
+            }
+            $("#formularioUsuario").append(`
+                <button type="reset" >Limpiar </button>
+                <button  type="submit" id="registro"> Registrarse </button>
+
+            `);
+            comprobar()
+        });
 
 });
+
+
+
+
+
+/* FUNCION PARA INICIAR SESION */
 function iniciar(){
-
-    const inputsSelec = document.querySelectorAll("#formularioUsuario input");
-        
-                /* Funcion que toma los inputs */
-                inputsSelec.forEach((input) => {
-                    input.addEventListener("keyup", validarForm);
-                });
-        
-                const form = document.getElementById("formularioUsuario");
-                /* Funcion que toma el boton de envio */
-                
-                form.addEventListener("submit",(e)=>{
-                    e.preventDefault();
-                    let usuarioRegistrado = localStorage.getItem("usuario")
-                    let usuarioRegistradoJSON= JSON.parse(usuarioRegistrado)
-                    console.log(usuarioRegistradoJSON)
-                    /* TOMA DE VALORES */
-                    let valorCorreo;
-                    let valorContra;
-                    valorContra=$("#clave").val()
-                    valorCorreo=$("#gmail").val()
-                    let correoDeRegistro;
-                    let contraDeRegistro;
-                    /* PRUEBA PARA VERIFICAR USUARIOS */
-
-
-           
-                    for (const user of usuarioRegistradoJSON){
-                        correoDeRegistro=user.correo
-                        contraDeRegistro=user.contra1
-                        console.log(correoDeRegistro)
-                        console.log(contraDeRegistro)
-                        if ((valorCorreo === correoDeRegistro) && (valorContra === contraDeRegistro )){
-                            swal.fire({
-                                icon: 'success',
-                                title: 'Has iniciado sesion con exito!',
-                            });
-                            /* Creacion de usuarios */
+        console.log("PASA POR INICIAR")
+        const inputsSelec = document.querySelectorAll("#formularioUsuario input");
             
-                            /* resetea el form */
-                            form.reset();
-                            
-                            uRegistrado=true;
-                            
-                            break
+            /* Funcion que toma los inputs */
+            inputsSelec.forEach((input) => {
+                input.addEventListener("keyup", validarForm);
+            });
             
-                        }else{
-                            
-                            swal.fire({
-            
-                                icon: 'error',
-                                title: 'Rellene los campos faltantes',
-            
-                            });
-                        
-                        }
-                    }
-
+            const form = document.getElementById("formularioUsuario");
+            /* Funcion que toma el boton de envio */
                     
-                    
-
-                   
+            form.addEventListener("submit",(e)=>{
+            e.preventDefault();
+            let usuarioRegistrado = localStorage.getItem("usuario")
+            let usuarioRegistradoJSON= JSON.parse(usuarioRegistrado)
+            /* TOMA DE VALORES */
+            let valorCorreo;
+            let valorContra;
+            /* Agarro el valor que se ingresa */
+            valorContra=$("#clave").val()
+            valorCorreo=$("#gmail").val()
+            let correoDeRegistro;
+            let contraDeRegistro;
+            
+            /* PRUEBA PARA VERIFICAR USUARIOS */
+            for (const user of usuarioRegistradoJSON){
+                correoDeRegistro=user.correo
+                contraDeRegistro=user.contra1
+                /* Toma de nombre de usuario para el menu usuario */
+                nombreUsuario=user.nombreCompleto
+                if ((valorCorreo === correoDeRegistro) && (valorContra === contraDeRegistro )){
+                    swal.fire({
+                        icon: 'success',
+                        title: 'Has iniciado sesion con exito!',
+                    });
+                    $("#ulDesplegable").hide(2000);
+                    /* resetea el form */
+                    form.reset();   
+                    uRegistrado=true;    
+                    break
+                }else{                               
+                        swal.fire({                
+                        icon: 'error',
+                        title: 'Rellene los campos faltantes',
+                    });                       
+                }
+            }          
         })
 }
 /* COMPROBACION DE INPUTS */
@@ -609,13 +668,7 @@ function comprobar(){
                         });
                         /* Creacion de usuarios */
                         datosUsuario= new user (valorName,valorUser,valorCorreo,valorClave,valorClaveVerificada);
-
-                    
-                            usuarios.push(datosUsuario);
-                            console.log(usuarios);
-                       
-                            
-                        
+                        usuarios.push(datosUsuario);
                         localStorage.setItem("usuario",JSON.stringify(usuarios));
         
                         $("#ulDesplegable").hide(2000);
@@ -638,6 +691,7 @@ function comprobar(){
                     };
         })
 }
+
 
 /* Expresiones */
 const expresiones = {

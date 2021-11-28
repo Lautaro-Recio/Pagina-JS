@@ -34,27 +34,18 @@
                         <div class="col-md-2 col-xs-12">
                           <div class="container-fluid">
                           <button class="carrito" id="irACarro"><img src="assets/images/carrito.png" alt="Carrito" class="carro"></button>
-                          <button class="carrito" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" id="camion"><img src="assets/images/camion.png" alt="camion" class="carro"></button>
+                          </div>
+                          <div class="col-md-2 col-xs-12">
+                              <ul class=" cardUsuario">
+                                <li class="cardUsuario" id="usuario">
+                                  <a href="#" role="button" id="usuarioBoton" aria-expanded="false"><img class="imgUsuario" src="assets/images/usuario.jpg" alt="usuario"></a>
+                                  
+                                </li>
+                              </ul>
+                          </div>                        
                         </div>
-                        <div class="col-md-2 col-xs-12">
-                            <ul class=" cardUsuario">
-                              <li class="cardUsuario" id="usuario">
-                                <a href="#" role="button" id="usuarioBoton" aria-expanded="false"><img class="imgUsuario" src="assets/images/usuario.jpg" alt="usuario"></a>
-                                
-                              </li>
-                            </ul>
-                        </div>
-                          
-                        </div>
-                        </form> 
-                      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header">
-                          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body" id="camionCompra">       
-                          <h5>Productos en camino!</h5>
-                        </div>
-                    </div>
+                      </form> 
+                      
                   </nav>
             </div>
         </div>
@@ -105,22 +96,33 @@
     </div>
     <div class="container borde" id="animacionCarro" href="#venirACarro">
       <div class="row espacio" >
+        
         <div class="col-md-12 col-xs-12" >
           <h4>¿Todavia no compraste nada?</h4>
           <p>Recorre nuestro sitio y elegi tus productos!!</p>
+
         </div>
-        <div class="col-md-12 col-xs-12" id="carro" >
-          <!-- Compras Aca -->
+        <div class="col-md-6 col-xs-12 divBotonNo" id="divProds" >
+          <a  type="button" class="botonLink" id="mostrarProductos">Productos</a>
+
         </div>
-        <div class="col-md-4 col-xs-3">
-          <button class="botonCarro" id="comprar">Comprar</button>
+        <div class="col-md-6 col-xs-12 divBotonNo" id="divCamion" >
+          <a  type="button" class="botonLink" id="camion">Compras Realizadas</a>
+
         </div>
-        <div class="col-md-4 col-xs-3">
-          <p class="total" id="total">Total: $</p>
-        </div>
-        <div class="col-md-4 col-xs-3">
-          <button class="botonCarro" id="borrar">Vaciar carrito</button>
-        </div>
+          <div class="col-md-12 col-xs-12" id="carro" >
+            <!-- Compras Aca -->
+          </div>
+          <div class="col-md-4 col-xs-3">
+            <button class="botonCarro" id="borrar">Vaciar carrito</button>
+          </div>
+          <div class="col-md-4 col-xs-3">
+            <p class="total" id="total">Total: $</p>
+          </div>
+          <div class="col-md-4 col-xs-3">
+            <button class="botonCarro" id="comprar">Comprar</button>
+
+          </div>
       </div>
     </div>
     <div class="container">
