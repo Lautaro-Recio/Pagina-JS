@@ -103,6 +103,9 @@ footer {
   border-right: #aaaaaa 1px solid;
   border-bottom: #aaaaaa 1px solid; }
 
+.compraDesplegable {
+  width: 40%; }
+
 /* cards de productos */
 .prods {
   margin: 4% 14%; }

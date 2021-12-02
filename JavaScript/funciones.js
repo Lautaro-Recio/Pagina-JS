@@ -142,6 +142,7 @@ let cantidad;
 /* Agregar al carrito */
 
     function addToCart(productoNuevo) {
+        console.log(productoNuevo)
         if (uRegistrado==true){
         let encontrado = carrito.find(prod => prod.id == productoNuevo.id);
             if (encontrado == undefined) {
@@ -202,20 +203,20 @@ let cantidad;
     
 /* ELIMINAR */
 
-function eliminar(eliminado){
-    localStorage.removeItem("cart")
-    let hola=document.getElementById(eliminado);
-    tablaBody.removeChild(hola);
-    posicion = carrito.findIndex(p => p.id == eliminado);
-    cantidad = carrito[posicion].cantidad = 1;
-    carrito.splice(posicion,1);
-    /* Falta restar el precio eliminado */
-    precioCuotas=(precioCuotas-eliminado);
-    console.log(precioCuotas);
-    total.innerHTML= `Total: $${precioCuotas}`;
-    localStorage.setItem("cart",JSON.stringify(carrito))
+    function eliminar(eliminado){
+        localStorage.removeItem("cart")
+        let hola=document.getElementById(eliminado);
+        tablaBody.removeChild(hola);
+        posicion = carrito.findIndex(p => p.id == eliminado);
+        cantidad = carrito[posicion].cantidad = 1;
+        carrito.splice(posicion,1);
+        /* Falta restar el precio eliminado */
+        precioCuotas=(precioCuotas-eliminado);
+        console.log(precioCuotas);
+        total.innerHTML= `Total: $${precioCuotas}`;
+        localStorage.setItem("cart",JSON.stringify(carrito))
 
-}   
+    }   
 
 
     /* Vaciar carrito */
@@ -236,10 +237,27 @@ function eliminar(eliminado){
     }
 
     /* BOTON DE COMPRAR / CON JQUERY */
+    /* La defino como global */
+    let ultimaCompra;
 
-    $("#comprar").click( function ()
+    let comprasEnLocal=[]
+    let comprasFinales;
     
-    {      
+    class compraParaLocal {
+        constructor(compra) {
+            console.log(compra)
+            this.id = compra.id;
+            this.imgs = compra.imgs;
+            this.prod = compra.prod;
+            this.precio = compra.precio;
+            this.categorias = compra.categorias;
+            this.cantidad = compra.cantidad;
+             
+        };
+    };
+    
+    let valor;
+    $("#comprar").click( function (){      
         $("#formulario").html(``);
         $("#formulario").show(1000)
         $("#formulario").attr("class","col-md-12 col-xs-12 borde")
@@ -266,28 +284,56 @@ function eliminar(eliminado){
                     <br>
                 <label class="label3"> 
                     <button class="botonesForm" id="enviar" type="submit">Enviar </button>
-                    <button class="botonCarro" id="borrar">Vaciar carrito</button>
                 </label>
             </form>
         `);
+        
 
+        valor = (localStorage.getItem("cart"));
+        console.log(valor)
+        valorEnJson=JSON.parse(valor)
+        console.log(valorEnJson)
+        let j=0;
+        for (let i=0;i<localStorage.length;i++){
+            /* Lo hice para hacer un contador para nombrar en el localStorage */
+            if(localStorage.getItem(nombreUsuario+i)){
+                j=j+1
+                console.log("CONSEGUIDO")
+            }else{
+                console.log("NO CONSEGUIDO")
+            }
+        }
+        for (const compra of valorEnJson){
+            
+            comprasFinales= new compraParaLocal(compra)
+            comprasEnLocal.push(comprasFinales)
+            
+        }
+        localStorage.setItem(nombreUsuario+j,JSON.stringify(comprasEnLocal))
 
+        console.log(comprasFinales)
+        console.log(typeof comprasFinales)
+        console.log(typeof comprasEnLocal)
+        comprasEnLocal=[]
+        
+        /* seteo la compra para que quede guardada en el local storage */
+        
+        
         $("#miForm").submit(function(e){
             e.preventDefault();
            
             /* VALIDACION SI ESTAN VACIOS LOS INPUTS */
-            
+                generarCompra()
+
                 Swal.fire(
                     $("#nombre").val(),
                     '¡Tu pedido esta en camino!',
                     'success',
                 );
-                generarCompra()
                 vaciarCarrito()
                 $("#formulario").hide(1000);
                 carrito=[];
                 console.log(carrito)
-             
         })
         
         /* FALTA RETOCAR ALGUNAS COSAS */
@@ -379,50 +425,120 @@ function eliminar(eliminado){
     /* SIRVE PARA GRAFICAR EN EL CAMION */
     let cantCompras=0;
     let finalCamion=0;
-
-
- function generarCompra (){
-    let ultimaCompra;
-    /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
-    let nRandom= Math.floor(Math.random()*1000000)
+    let compra;
+    let j=1;
+    function generarCompraEnLocal (){
+        /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
+        let nRandom= Math.floor(Math.random()*1000000)
+        
        
-
-    for (let i=0; i<localStorage.length;i++){
-        let clave=localStorage.key(i);
-        let valor = (localStorage.getItem("cart"));
-        ultimaCompra= (JSON.parse(valor));
-        cantCompras=cantCompras+1;
-        
-        /* SE GRAFICA EL MENU DESPLEGABLE */
         $("#carro").append(`
-            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion" id="compraCamion">
-                <li class="nav-item dropdown">
-                <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                   Numero de compra: ${nRandom} 
-                </a>
-                <ul id="tablaCamion${nRandom}" class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion" id="pedido${j}">
+                    <li class="nav-item dropdown">
+                    <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Numero de compra: ${nRandom} 
+                    </a>
+                    <ul id="tablaCamion${nRandom}" class="dropdown-menu compraDesplegable" aria-labelledby="offcanvasNavbarDropdown">
+                    </ul>
+                    </li>
+                    <button onclick="borrarCompra(pedido${j})">x</button>
                 </ul>
-                </li>
-            </ul>
-            `
-            );
-        $(".muestraCamion").hide()
-            /* ACA SE AGREGAN LOS PRODS AL MENU */
-        for (const prodFinal of ultimaCompra){
-            finalCamion=finalCamion+prodFinal.precio
-            $("#tablaCamion"+nRandom).append(` 
-            <li class="elementoCamion">
-                <tr class="elementoCamion" id="tablaFinalCamion">
-                    <td class="elementoCamion"> <img class="imgCamion" src=${JSON.stringify(prodFinal.imgs)}></td>
-                    <td class="elementoCamion"><p>${prodFinal.prod}</p></td>
-                    <td class="elementoCamion"><b id=${prodFinal.precio}>$ ${prodFinal.precio}</b></td>
+                `
+                );
+            $(".muestraCamion").hide()
+        j=j+1
+        z=j
+        for (let i=0; i<localStorage.length;i++){
+            if (compra===null){
+                compra= localStorage.getItem(nombreUsuario+i)
+            }
 
-                </tr>
-            </li>`);
+            ultimaCompra= (JSON.parse(compra));
+            /* SE GRAFICA EL MENU DESPLEGABLE */
         };
+        console.log(ultimaCompra)
+
+
+            /* ACA SE AGREGAN LOS PRODS AL MENU */
+            
+            for (const prodFinal of ultimaCompra){
+                finalCamion=finalCamion+(prodFinal.precio*prodFinal.cantidad)
+                
+                $("#tablaCamion"+nRandom).append(` 
+                <li class="elementoCamion" >
+                    <tr class="elementoCamion" id="tablaFinalCamion">
+                        <td class="elementoCamion"> <img class="imgCamion" src=${JSON.stringify(prodFinal.imgs)}></td>
+                        <td class="elementoCamion"><p>${prodFinal.prod}</p></td>
+                        <td class="elementoCamion"><b id=${prodFinal.precio}>$ ${prodFinal.precio}</b></td>
+                    </tr>
+                </li>`);
+
+            };
+            $("#tablaCamion"+nRandom).append(`                        
+                <td class="elementoCamion"><b>$ ${finalCamion}</b></td>
+            `)
+            finalCamion=0
+    };  
+    /* Defino z para poder agregar mas productos con id de pedido con numero */
+    let z;
+    function generarCompra (){
         
-    };
-};
+        /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
+        let nRandom= Math.floor(Math.random()*1000000)
+        $("#carro").append(`
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion" id="pedido${z}">
+                    <li class="nav-item dropdown">
+                    <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Numero de compra: ${nRandom} 
+                    </a>
+                    <ul id="tablaCamion${nRandom}" class="dropdown-menu compraDesplegable" aria-labelledby="offcanvasNavbarDropdown">
+                    </ul>
+                    </li>
+                    <button onclick="borrarCompra(pedido${z})">x</button>
+                </ul>
+                `
+                );
+            $(".muestraCamion").hide()
+            z=z+1
+            /* ACA SE AGREGAN LOS PRODS AL MENU */
+            let compraActual=localStorage.getItem("cart")
+            console.log(compraActual)
+            let compraActualJSon=(JSON.parse(compraActual))
+            console.log(compraActualJSon)
+            for (const prodFinal of compraActualJSon){
+                finalCamion=finalCamion+(prodFinal.precio*prodFinal.cantidad)
+                $("#tablaCamion"+nRandom).append(` 
+                <li class="elementoCamion">
+                    <tr class="elementoCamion" id="tablaFinalCamion">
+                        <td class="elementoCamion"> <img class="imgCamion" src=${JSON.stringify(prodFinal.imgs)}></td>
+                        <td class="elementoCamion"><p>${prodFinal.prod}</p></td>
+                        <td class="elementoCamion"><b id=${prodFinal.precio}>$ ${prodFinal.precio}</b></td>
+                    </tr>
+                </li>`);
+
+            };
+            $("#tablaCamion"+nRandom).append(`                        
+                <td class="elementoCamion"><b>$ ${finalCamion}</b></td>
+            `)
+            finalCamion=0
+    };       
+    let cantidadCompras=0;
+    function borrarCompra(compraBorrada){
+        let busquedaDeCompra=$("#carro").children()
+        /* $(compraBorrada).remove() */
+        
+        $("#carro").children().each(function(hola){
+            console.log("CACA")
+            if((busquedaDeCompra === compraBorrada)){
+                console.log("caca")
+            }
+        })
+            
+       
+        /* localStorage.removeItem(nombreUsuario+1) */
+    }
+   
+
 /* MOSTRAR COMPRAS EN SECCION CARRITO*/
 $("#camion").click(function(){
     $(".muestraCamion").show(1000)
@@ -432,6 +548,7 @@ $("#camion").click(function(){
     document.getElementById("divCamion").classList.remove("divBotonNo");
     document.getElementById("divCamion").classList.add("divBoton");
 })
+
 /* MOSTRAR PRODUCTOS EN SECCION CARRITO */
 $("#mostrarProductos").click(function(){
     $(".muestraCamion").hide(1000)
@@ -505,7 +622,7 @@ if (usuarioRegistrado === null){
 let nombreUsuario;
 
 $("#usuarioBoton").click(function(){
-
+    
     if (uRegistrado ===false){
         $("#ulDesplegable").html('');
         $("#usuario").append(`
@@ -554,20 +671,20 @@ $("#usuarioBoton").click(function(){
             <p>Hola ${nombreUsuario}!</p>
             <a type="button" id="datos">Datos de la cuenta</a>
             <a type="button" id="cerrar">Cerrar sesion</a>
-
         `)
         /* CERRAR SESION */
         $("#cerrar").click(function(){
             uRegistrado="repetido"
             $("#ulDesplegable").hide(1000);
-            vaciarCarrito()
+            j=0
+            $("#carro").html(``)
         })
     }
     
 
     /* FUNCION DE REGISTRO */
         $("#registrarse").click(function(){
-                    
+            console.log("SE REGISTRA")
             let i=0;
             $("#formularioUsuario").html(``);
             for(const inputsNames of inputs){ 
@@ -621,30 +738,56 @@ function iniciar(){
             let contraDeRegistro;
             
             /* PRUEBA PARA VERIFICAR USUARIOS */
-            for (const user of usuarioRegistradoJSON){
-                correoDeRegistro=user.correo
-                contraDeRegistro=user.contra1
-                /* Toma de nombre de usuario para el menu usuario */
-                nombreUsuario=user.nombreCompleto
-                if ((valorCorreo === correoDeRegistro) && (valorContra === contraDeRegistro )){
-                    swal.fire({
-                        icon: 'success',
-                        title: 'Has iniciado sesion con exito!',
-                    });
-                    $("#ulDesplegable").hide(2000);
-                    /* resetea el form */
-                    form.reset();   
-                    uRegistrado=true;    
-                    break
-                }else{                               
+            if (usuarioRegistradoJSON === null){
+                /* NO EXISTE ESTE USUARIO */
+                swal.fire({                
+                    icon: 'error',
+                    title: 'Este usuario no existe',
+                    text: 'Registrate'
+                });
+            } else{
+                for (const user of usuarioRegistradoJSON){
+                    correoDeRegistro=user.correo
+                    contraDeRegistro=user.contra1
+                    /* Toma de nombre de usuario para el menu usuario */
+                    nombreUsuario=user.nombreCompleto
+                    if ((valorCorreo === correoDeRegistro) && (valorContra === contraDeRegistro )){
+
+
+                        for (let i=0;i<localStorage.length;i++){
+                            compra = localStorage.getItem(nombreUsuario+i)
+
+                            if(compra == null){
+                                console.log("NO HAY NADA")
+                            }else{
+                                generarCompraEnLocal()
+                            }
+                        }
+                        uRegistrado=true;
+                        swal.fire({
+                            icon: 'success',
+                            title: 'Has iniciado sesion con exito!',
+                        });
+                        $("#ulDesplegable").hide(2000);
+                        /* resetea el form */
+                        
+
+                        
+                        
+                        form.reset();
+                        break
+                    }else{                               
                         swal.fire({                
-                        icon: 'error',
-                        title: 'Rellene los campos faltantes',
-                    });                       
+                            icon: 'error',
+                            title: 'Rellene los campos faltantes',
+                        });                       
+                    }
                 }
-            }          
+            }         
         })
 }
+
+
 /* COMPROBACION DE INPUTS */
 function comprobar(){
     
@@ -670,15 +813,23 @@ function comprobar(){
                         datosUsuario= new user (valorName,valorUser,valorCorreo,valorClave,valorClaveVerificada);
                         usuarios.push(datosUsuario);
                         localStorage.setItem("usuario",JSON.stringify(usuarios));
-        
-                        $("#ulDesplegable").hide(2000);
+                        
+                        
                         
                         uRegistrado=true;
         
                         /* resetea el form */
                         form.reset();
-        
-        
+                        
+                            inputsLlenados.nombreApellido = false;
+                            inputsLlenados.nombreUsuario = false;
+                            inputsLlenados.gmail = false;
+                            inputsLlenados.direccion=false;
+                            inputsLlenados.clave = false;
+                            inputsLlenados.claveVerificada = false;
+                       
+                        nombreUsuario=valorUser
+                        $("#ulDesplegable").hide(2000);
                     }else{
                         
                         swal.fire({
