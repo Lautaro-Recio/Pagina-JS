@@ -296,11 +296,12 @@ let cantidad;
         let j=0;
         for (let i=0;i<localStorage.length;i++){
             /* Lo hice para hacer un contador para nombrar en el localStorage */
-            if(localStorage.getItem(nombreUsuario+i)){
+            if(localStorage.getItem(usuario+i)){
                 j=j+1
                 console.log("CONSEGUIDO")
             }else{
                 console.log("NO CONSEGUIDO")
+                localStorage.setItem(usuario+j,JSON.stringify(comprasEnLocal))
             }
         }
         for (const compra of valorEnJson){
@@ -309,7 +310,8 @@ let cantidad;
             comprasEnLocal.push(comprasFinales)
             
         }
-        localStorage.setItem(nombreUsuario+j,JSON.stringify(comprasEnLocal))
+        console.log("valor de j "+j)
+        localStorage.setItem(usuario+j,JSON.stringify(comprasEnLocal))
 
         console.log(comprasFinales)
         console.log(typeof comprasFinales)
@@ -426,14 +428,15 @@ let cantidad;
     let cantCompras=0;
     let finalCamion=0;
     let compra;
-    let j=1;
+    let j=0;
+    let z=0;
     function generarCompraEnLocal (){
         /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
         let nRandom= Math.floor(Math.random()*1000000)
         
        
         $("#carro").append(`
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion" id="pedido${j}">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion" id="${(usuario)+(j)}">
                     <li class="nav-item dropdown">
                     <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Numero de compra: ${nRandom} 
@@ -441,7 +444,7 @@ let cantidad;
                     <ul id="tablaCamion${nRandom}" class="dropdown-menu compraDesplegable" aria-labelledby="offcanvasNavbarDropdown">
                     </ul>
                     </li>
-                    <button onclick="borrarCompra(pedido${j})">x</button>
+                    <button onclick="borrarCompra(${(usuario)+(j)})">x</button>
                 </ul>
                 `
                 );
@@ -450,7 +453,7 @@ let cantidad;
         z=j
         for (let i=0; i<localStorage.length;i++){
             if (compra===null){
-                compra= localStorage.getItem(nombreUsuario+i)
+                compra= localStorage.getItem(usuario+i)
             }
 
             ultimaCompra= (JSON.parse(compra));
@@ -480,13 +483,16 @@ let cantidad;
             finalCamion=0
     };  
     /* Defino z para poder agregar mas productos con id de pedido con numero */
-    let z;
+   
     function generarCompra (){
         
-        /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
-        let nRandom= Math.floor(Math.random()*1000000)
-        $("#carro").append(`
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion" id="pedido${z}">
+        if(localStorage.getItem(usuario+z)){
+            
+            console.log(z)
+            console.log("CONSEGUIDO")
+            let nRandom= Math.floor(Math.random()*1000000)
+            $("#carro").append(`
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 muestraCamion" id="${usuario+(z)}">
                     <li class="nav-item dropdown">
                     <a class=" desplegableCamion " href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Numero de compra: ${nRandom} 
@@ -494,12 +500,12 @@ let cantidad;
                     <ul id="tablaCamion${nRandom}" class="dropdown-menu compraDesplegable" aria-labelledby="offcanvasNavbarDropdown">
                     </ul>
                     </li>
-                    <button onclick="borrarCompra(pedido${z})">x</button>
+                    <button onclick="borrarCompra(${(usuario)+(z)})">x</button>
                 </ul>
                 `
                 );
             $(".muestraCamion").hide()
-            z=z+1
+            
             /* ACA SE AGREGAN LOS PRODS AL MENU */
             let compraActual=localStorage.getItem("cart")
             console.log(compraActual)
@@ -521,21 +527,31 @@ let cantidad;
                 <td class="elementoCamion"><b>$ ${finalCamion}</b></td>
             `)
             finalCamion=0
-    };       
-    let cantidadCompras=0;
-    function borrarCompra(compraBorrada){
-        let busquedaDeCompra=$("#carro").children()
-        /* $(compraBorrada).remove() */
+            z=z+1
+        }else{
+            console.log("NO CONSEGUIDO")
+            
+            
+        }
+        /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
         
-        $("#carro").children().each(function(hola){
-            console.log("CACA")
-            if((busquedaDeCompra === compraBorrada)){
-                console.log("caca")
-            }
-        })
+        
+    };    
+
+    let cantidadCompras=0;
+
+    function borrarCompra(compraBorrada){
+            console.log(compraBorrada)
+        
+            let idDeCompra=$(compraBorrada).attr("id")
+         
+                console.log(idDeCompra)
+                $(compraBorrada).remove()
+            
+        
             
        
-        /* localStorage.removeItem(nombreUsuario+1) */
+         localStorage.removeItem(idDeCompra)
     }
    
 
@@ -620,7 +636,7 @@ if (usuarioRegistrado === null){
 
 /* TOMA EL NOMBRE DE USUARIO */
 let nombreUsuario;
-
+let usuario;
 $("#usuarioBoton").click(function(){
     
     if (uRegistrado ===false){
@@ -678,6 +694,7 @@ $("#usuarioBoton").click(function(){
             $("#ulDesplegable").hide(1000);
             j=0
             $("#carro").html(``)
+            z=0
         })
     }
     
@@ -751,11 +768,12 @@ function iniciar(){
                     contraDeRegistro=user.contra1
                     /* Toma de nombre de usuario para el menu usuario */
                     nombreUsuario=user.nombreCompleto
+                    usuario=user.nombreDeUsuario
                     if ((valorCorreo === correoDeRegistro) && (valorContra === contraDeRegistro )){
 
 
                         for (let i=0;i<localStorage.length;i++){
-                            compra = localStorage.getItem(nombreUsuario+i)
+                            compra = localStorage.getItem(usuario+i)
 
                             if(compra == null){
                                 console.log("NO HAY NADA")
