@@ -84,7 +84,7 @@ const buscador = document.querySelector("#datos")
 
 /* BUSCADOR */
 const buscar = () => {
-    tarjetas.inner``
+    tarjetas.innerHTML=``
     const texto = buscador.value.toLowerCase();
     for( let producto of productos){
         let nombre = producto.prod.toLowerCase();
@@ -118,12 +118,23 @@ const buscar = () => {
 buscador.addEventListener("keyup",buscar)
 
 
-
+let totalCompra=0
 /* Agregar al carrito */
-function calcular(multiplo){
-    let multiplicador = document.getElementById("multiplicador").value;
-    let total = (multiplicador*producto.precio);
-    console.log(total)
+function calcular(){
+    
+
+    for (const precio of carrito){
+        console.log(precio.precio)
+        console.log(precio.cantidad)
+
+        precioEliminado=precio.precio*precio.cantidad
+        
+        totalCompra=totalCompra+precioEliminado
+
+        console.log(precioEliminado)
+    }
+    total.innerHTML= `Total: $${totalCompra}`;
+
 }
 /* Fin Funcion */
 
@@ -172,8 +183,9 @@ let cantidad;
                 <tr>`);
                     $(tabla).append(tablaBody)
                     $("#carro").append(tabla)
-                    precioCuotas=precioCuotas+productoNuevo.precio
-                    total.innerHTML= `Total: $${precioCuotas}`;
+                    totalCompra=0
+
+                    calcular()
                     posicion = carrito.findIndex(p => p.id == productoNuevo.id);
                     /! ANIMACIONES CONCATENADAS!/
                     $("#comprar").show(2000)
@@ -187,8 +199,8 @@ let cantidad;
             } else {
                 posicion = carrito.findIndex(p => p.id == productoNuevo.id);
                 cantidad = carrito[posicion].cantidad += 1;
-                precioCuotas=precioCuotas+productoNuevo.precio;
-                total.innerHTML= `Total: $${precioCuotas}`;
+                totalCompra=0
+                calcular()
                 document.getElementById(productoNuevo.prod).value = cantidad;
                 let precio= document.getElementById(productoNuevo.precio);
                 precio.innerText=`$${productoNuevo.precio*cantidad}`;
@@ -209,12 +221,9 @@ let cantidad;
 let montoCarro=0
     function eliminar(eliminado){
         let precioEliminado;
-        for (const precio of carrito){
-            console.log("hola")
-            precioEliminado=(precio.precio*precio.cantidad)
-        }
         
-        montoCarro=montoCarro-precioEliminado
+        
+        console.log(precioEliminado)
         console.log(montoCarro)
         localStorage.removeItem("cart")
         let hola=document.getElementById(eliminado);
@@ -222,10 +231,7 @@ let montoCarro=0
         posicion = carrito.findIndex(p => p.id == eliminado);
         cantidad = carrito[posicion].cantidad = 1;
         carrito.splice(posicion,1);
-        /* Dice mas porque el montoCarro me da negativo entonces     +- = - */
-        precioCuotas=(precioCuotas+montoCarro);
-        
-        total.innerHTML= `Total: $${precioCuotas}`;
+        calcular()
         localStorage.setItem("cart",JSON.stringify(carrito))
 
     }   
@@ -288,9 +294,6 @@ let montoCarro=0
                         <input type="radio" value="9" class="cuotas" name="cuotas" id="cuotas4">9 Cuotas </p></input>
                      
                         <input type="radio" value="12" class="cuotas" name="cuotas" id="cuotas5">12 Cuotas </p></input>
-
-                        
-                        
                     </label>
                     <p id="totalCuotas" class="totalCuotas"></p>
                 </div>
@@ -315,8 +318,6 @@ let montoCarro=0
         $("#miForm").submit(function(e){
             e.preventDefault();
             /* VALIDACION SI ESTAN VACIOS LOS INPUTS */
-           
-            
                 Swal.fire(
                     $("#nombre").val(),
                     '¡Tu pedido esta en camino!',
@@ -339,27 +340,27 @@ let montoCarro=0
                 if($("#cuotas1").is(':checked')) {  
                     $("#totalCuotas").html(' ')
                     let cantCuotas = $("#cuotas1").val();
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas))                    
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra))                    
                     $("#enviar").show(1000)
                 } else if ($("#cuotas2").is(':checked')){ 
                     $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas2").val();
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                     $("#enviar").show(1000)
                 } else if ($("#cuotas3").is(':checked')){ 
                     $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas3").val(); 
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                     $("#enviar").show(1000)
                 } else if ($("#cuotas4").is(':checked')){ 
                     $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas4").val();
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                     $("#enviar").show(1000)
                 } else if ($("#cuotas5").is(':checked')){ 
                     $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas5").val();  
-                    $("#totalCuotas").append("El monto a abonar son $"+(precioCuotas/cantCuotas) + "Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
                     $("#enviar").show(1000)              
                 } 
             });  
@@ -431,17 +432,14 @@ let montoCarro=0
         /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
         comprasEnLocal=JSON.parse(localStorage.getItem(usuario)) || [];
         
-        $("#carro").html(``)
+        $(".muestraCamion").remove()
         
             if (compra===null){
                 compra = localStorage.getItem(usuario)
             }
 
             ultimaCompra= (JSON.parse(compra));
-            /* SE GRAFICA EL MENU DESPLEGABLE */
-        
-        console.log(ultimaCompra)
-            
+            /* SE GRAFICA EL MENU DESPLEGABLE */            
 
             /* ACA SE AGREGAN LOS PRODS AL MENU */
             let i=0
@@ -456,15 +454,24 @@ let montoCarro=0
                     </a>
                     <ul id="tablaCamion${nRandom}" class="dropdown-menu compraDesplegable" aria-labelledby="offcanvasNavbarDropdown">
                     </ul>
-                    </li>
                     <button onclick="borrarCompra(${(usuario+i)})">x</button>
+
+                    </li>
                 </ul>
                 `
                 );
+                $("#tablaCamion"+nRandom).append(`
+                <li class="elementoCamion" >
+                    <tr class="elementoCamion">                   
+                        <td class="elementoCamion"><p class="prodsCompra">Img</p></td>
+                        <td class="elementoCamion"><p class="prodsCompra">Productos</p></td>
+                        <td class="elementoCamion"><b class="prodsCompra">Precio</b></td>
+                        <td class="elementoCamion"><b class="prodsCompra">Cantidad</b></td>
+                    </tr>
+                </li>`)
             $(".muestraCamion").hide()
 
                 for (const prodFinal of comprasEnLocal[i]){
-                    console.log(ultimaCompra[i])
                     finalCamion=finalCamion+(prodFinal.precio*prodFinal.cantidad)
                     
                     $("#tablaCamion"+nRandom).append(` 
@@ -473,13 +480,13 @@ let montoCarro=0
                             <td class="elementoCamion"> <img class="imgCamion prodsCompra" src=${JSON.stringify(prodFinal.imgs)}></td>
                             <td class="elementoCamion"><p class="prodsCompra">${prodFinal.prod}</p></td>
                             <td class="elementoCamion"><b class="prodsCompra" id=${prodFinal.precio}>$${prodFinal.precio}</b></td>
+                            <td class="elementoCamion"><b class="prodsCompra">${prodFinal.cantidad}</b></td>
                         </tr>
                     </li>`);
                 };
                 $("#tablaCamion"+nRandom).append(`                        
                     <td class="elementoCamion"><b>$ Total:${finalCamion}</b></td>
                 `)
-                console.log("PASE POR EL GRAFICO")
                 finalCamion=0
                 i=i+1
         }    
@@ -525,6 +532,7 @@ $("#camion").click(function(){
         document.getElementById("divProds").classList.remove("divBoton");
         document.getElementById("divCamion").classList.remove("divBotonNo");
         document.getElementById("divCamion").classList.add("divBoton");
+        
     }else if ((uRegistrado==false) || (uRegistrado=="repetido") || (uRegistrado=="registrado")) {
         swal.fire({
     
@@ -560,31 +568,34 @@ console.log(puestos);
 $("#creadores").prepend('<button class="categorias" id="btn1"> Mostrar creadores </button>');
 $("#btn1").click(() => { 
 
-$.get(URLGET, function (respuesta, estado) {
-      if(estado === "success"){
-        let misDatos = respuesta;
-        let creadores = misDatos.slice(0,3)
-        let i=0;
-        for (const dato of creadores) {
-            i=i+1
-            $("#creadores").prepend(`
-            <div class="col-md-4 col-xs-4" id="aniCrea">
-                <img class="fotoCreadores" src=${dato.image}>
-                <h3 class="infoCreadores">${dato.name}</h3>
-                <p class="infoCreadores">${puestos[i]}</p>
-            </div>`
-        );
+        $("#creadores").addClass("creadores");
+        $("#btn1").hide(1);
+    
+        $.get(URLGET, function (respuesta, estado) {
+            if(estado === "success"){
+                let misDatos = respuesta;
+                let creadores = misDatos.slice(0,3)
+                let i=0;
+                for (const dato of creadores) {
+                    i=i+1
+                    $("#creadores").prepend(`
+                    <div class="col-md-4 col-xs-4" id="aniCrea">
+                        <img class="fotoCreadores" src=${dato.image}>
+                        <h3 class="infoCreadores">${dato.name}</h3>
+                        <p class="infoCreadores">${puestos[i]}</p>
+                    </div>`
+                );
+                
+                }; 
+                };
         
-        }; 
-        };
-        $("#creadores").prepend(`<h3 class="infoCreadores">Nuestros Creadores</h3> `);
-        $("#btn1").hide(2000);
-        $("#creadores")
-        .hide(1)
-        .slideDown(2000);
-});
-
-});
+                $("#creadores").prepend(`<h3 class="infoCreadores">Creadores y Equipo de Trabajo</h3> `);
+                $("#creadores")
+                .hide(1)
+                .slideDown(2000);
+        });
+    
+    });
 
 
 
