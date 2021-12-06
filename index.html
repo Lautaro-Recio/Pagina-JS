@@ -21,25 +21,21 @@
                 <!-- NavBar -->
                 <nav class="navbar navbar-light fixed-top">
                     <div class="container-fluid">
-                      <form class="d-flex mx-auto">
+                      <form class="d-flex mx-auto margin">
                         <div class="col-md-1 col-xs-12">
                           <img class="logo mx-auto"src="assets/images/logo.png" alt="logo">
                         </div>
-                        <div class="col-md-5 col-xs-12">
+                        <div class="col-md-6 col-xs-12">
                           <input id="datos" class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
                         </div>
-                        <div class="col-md-2 col-xs-12">
-                          <h2 class="subtitulo">"Tus Productos deportivos al alcance de tus manos"</h2>
-                        </div>
-                        <div class="col-md-2 col-xs-12">
-                          <div class="container-fluid">
-                          <button class="carrito" id="irACarro"><img src="assets/images/carrito.png" alt="Carrito" class="carro"></button>
-                          </div>
-                          <div class="col-md-2 col-xs-12">
+                        <div class="col-md-5 col-xs-12 ">
+                          <div class="col-md-12 col-xs-12">
                               <ul class=" cardUsuario">
-                                <li class="cardUsuario" id="usuario">
-                                  <a href="#" role="button" id="usuarioBoton" aria-expanded="false"><img class="imgUsuario" src="assets/images/usuario.jpg" alt="usuario"></a>
-                                  
+                                <li class="cardUsuario botones" id="usuario">
+
+                                  <a class="usuarioBoton" href="#" role="button" id="usuarioBoton" aria-expanded="false"><img class="imgUsuario" src="assets/images/usuario.jpg" alt="usuario"></a>
+                                  <button class="carrito" id="irACarro"><img src="assets/images/carrito.png" alt="Carrito" class="carro"></button>
+
                                 </li>
                               </ul>
                           </div>                        
@@ -96,12 +92,6 @@
     </div>
     <div class="container borde" id="animacionCarro" href="#venirACarro">
       <div class="row espacio" >
-        
-        <div class="col-md-12 col-xs-12" >
-          <h4>¿Todavia no compraste nada?</h4>
-          <p>Recorre nuestro sitio y elegi tus productos!!</p>
-
-        </div>
         <div class="col-md-6 col-xs-12 divBotonNo" id="divProds" >
           <a  type="button" class="botonLink" id="mostrarProductos">Productos</a>
 
@@ -140,13 +130,13 @@
           <!-- CREADORES CON AJAX ACA -->
         </div>
         <div class="row">
-          <div class="col-md-3 col-xs-12">
+          <div class="col-md-3 col-xs-3">
             <img class="logo" src="assets/images/logo.png" alt="Logo">
           </div>
-          <div class="col-md-9 col-xs-12">
-            <img class="redes" src="assets/images/instagram.png" alt="Logo">
-            <img class="redes" src="assets/images/linkedin.png" alt="Logo">
-            <img class="redes" src="assets/images/whatsapp.png" alt="Logo">
+          <div class="col-md-9 col-xs-9">
+            <a href="https://www.instagram.com/?hl=es-la" target="blanck"><img class="redes" src="assets/images/instagram.png" alt="Logo"></a>
+            <a href="https://www.linkedin.com/in/lautaro-recio-623373220/" target="blanck"><img class="redes" src="assets/images/linkedin.png" alt="Logo"></a>
+            <a href="https://web.whatsapp.com/" target="blanck"><img class="redes" src="assets/images/whatsapp.png" alt="Logo"></a>
           </div>
         
         </div>

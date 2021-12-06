@@ -45,9 +45,9 @@ p{
     margin-top: 50px;
 }
 .form-control {
-    width: 600px;
+    width: 800px;
     height: 40px;
-    margin-top: 2%;
+    margin-top: 3%;
 }
 .dropdown-menu{
     background-color: $nav;
@@ -57,3 +57,10 @@ p{
     padding-top: 2%;
 }
 
+.botones{
+    display:flex;
+}
+.margin{
+    margin: 0% !important;
+    width: 100%;
+}

@@ -9,6 +9,8 @@
     background-color: $amarillo;
     width: 25%;
     border: white 2px solid;
+    top: 80%;
+    left:65%;
 }
 .desplegableUsuario{
     text-decoration: none;
@@ -43,4 +45,12 @@
     border: 3px solid black;
     color: black;
 
+}
+.botonesUsuario{
+    border-radius: 10%;
+    justify-content: space-between;
+    margin: 0% 5%;
+}
+.usuarioBoton{
+    margin: 0%;
 }
