@@ -613,8 +613,8 @@ $("#btn1").click(() => {
 /* SECCION FORMULARIO DE USUARIO */
 /* Los const sirven para despues graficarlos en el menu */
 const inputs = ["nombreApellido","nombreUsuario","gmail","direccion","clave","claveVerificada"];
-const labels =  ["Nombre y apellido","Usuario", "Correo","direccion", "Contraseña", "Reescriba su contraseña"];
-const places = ["Nombre...","Username...","Correo...","Direccion...","Contraseña...",("verificar Contra...")];
+const labels =  ["Nombre y apellido","Usuario", "Correo","Direccion", "Contraseña", "Reescriba su contraseña"];
+const places = ["Nombre...","Username...","Correo...","Direccion...","Contraseña...","verificar..."];
 const validaciones = ["*Puede llevar letras, espacios y acentos","*Puede llevar letras, numeros, guion y guion_bajo, sin espacios","*Debe ingresar una direccion valida","*4 a 30 Digitos","*Su contraseña debe tener 4 a 12 Digitos","*verificar Contraseña"];
 
 /* ACA VAN A IR LOS NUEVOS USUARIOS */
