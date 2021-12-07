@@ -17,6 +17,14 @@
     font-size: 21px;
     background-color: white;
     border:5px $amarillo solid;
+    margin-left: 15%;
+}
+.compraDesplegable{
+    width: 40%;
+    position: absolute;
+    inset: 0px auto auto 0px;
+    margin-left: 220px !important;
+    transform: translate(220px, 0) !important;
 }
 a:hover{
     color: $amarillo;

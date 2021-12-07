@@ -71,6 +71,7 @@
   /* GENERACION DE BOTONES */ 
     botones()
 
+    /* Funcion para mostrar todos los productos  */
     $("#todo").click(
         function mostrarTodos(){
             tarjetas.innerHTML =``
@@ -82,7 +83,7 @@
 const buscador = document.querySelector("#datos")
 /* Fin Funcion */
 
-/* BUSCADOR */
+/* BUSCADOR DE LA NAV */
 const buscar = () => {
     tarjetas.innerHTML=``
     const texto = buscador.value.toLowerCase();
@@ -105,21 +106,20 @@ const buscar = () => {
             $("#tarjetas").append(div);
 
         }
-        if (tarjetas.innerHTML==""){
-            let prodNo= document.createElement("h6")
-            prodNo.setAttribute("class", "prodNO")
-            prodNo.textContent=`Producto no encontrado...`
-            $("#tarjetas").append(prodNo);
-        }
-
     }
-  
+    /* Si no encuentra productos en trajetas muestra producto no encontrado */
+    if (tarjetas.innerHTML==""){
+        let prodNo= document.createElement("h6")
+        prodNo.setAttribute("class", "prodNO")
+        prodNo.textContent=`Producto no encontrado...`
+        $("#tarjetas").append(prodNo);
+    }
 }
 buscador.addEventListener("keyup",buscar)
 
 
 let totalCompra=0
-/* Agregar al carrito */
+/* funcion de calcular el total del carrito */
 function calcular(){
     
 
@@ -137,11 +137,6 @@ function calcular(){
 
 }
 /* Fin Funcion */
-
-/* TOMA DE DATOS/JQUERY */
-
-/* $("#datos").change */
-
 class productoCarrito {
     constructor(obj) {
         this.id = obj.id;
@@ -179,7 +174,7 @@ let cantidad;
                     <td class="elementoTablas">${productoNuevo.prod}</td>
                     <td class="elementoTablas"><b id=${productoNuevo.precio}>$${productoNuevo.precio}</b></td>
                     <td class="elementoTablas"><input type="text" class="inputCelu" value=1 id="${productoNuevo.prod}"></input></td>
-                    <td class="elementoTablas"><button onclick=eliminar(${JSON.stringify(productoNuevo.id)})>x</button></td>
+                    <td class="elementoTablas"><button class="btnEliminar" onclick=eliminar(${JSON.stringify(productoNuevo.id)})>x</button></td>
                 <tr>`);
                     $(tabla).append(tablaBody)
                     $("#carro").append(tabla)
@@ -217,7 +212,7 @@ let cantidad;
     }
 } 
     
-/* ELIMINAR */
+/* Eliminar  */
 let montoCarro=0
     function eliminar(eliminado){
         let precioEliminado;
@@ -254,7 +249,7 @@ let montoCarro=0
         
     }
 
-    /* BOTON DE COMPRAR / CON JQUERY */
+    
     /* La defino como global */
     let ultimaCompra;
 
@@ -275,7 +270,10 @@ let montoCarro=0
     let usuarioBorrado;
     let comprasEnLocal;
     let valor;
-    $("#comprar").click( function (){      
+
+    /* BOTON DE COMPRAR / CON JQUERY */
+    $("#comprar").click( function (){     
+        /* Cuando se toca el boton comprar se despliega el menu de eleccion para elegir como pagar la compra */ 
         $("#formulario").html(``);
         $("#formulario").show(1000)
         $("#formulario").attr("class","col-md-12 col-xs-12 borde")
@@ -299,25 +297,23 @@ let montoCarro=0
                 </div>
                     <br>
                 <label class="label3"> 
-                    <button class="botonesForm" id="enviar" type="submit">Enviar </button>
+                    <button class="botonesForm" id="enviar" type="submit">Confirmar </button>
                 </label>
             </form>
         `);
+
+        /* Obtengo los datos de las compras ya cargadas en el localStorage */
         comprasEnLocal=JSON.parse(localStorage.getItem(usuario)) || [];
         let compraDELstorage=localStorage.getItem("cart")
         let JSONcompraDELstorage= JSON.parse(compraDELstorage)
         comprasEnLocal.push(JSONcompraDELstorage)
+        /* seteo la compra para que quede guardada en el local storage */
         localStorage.setItem(usuario,JSON.stringify(comprasEnLocal))
 
-       
-       
-        
-        /* seteo la compra para que quede guardada en el local storage */
-        
-        
+
+        /* Esta funcion grafica la compra*/
         $("#miForm").submit(function(e){
             e.preventDefault();
-            /* VALIDACION SI ESTAN VACIOS LOS INPUTS */
                 Swal.fire(
                     $("#nombre").val(),
                     '¡Tu pedido esta en camino!',
@@ -326,6 +322,7 @@ let montoCarro=0
                 vaciarCarrito()
                 $("#formulario").hide(1000);
                 carrito=[];
+
                 let camionesCargados=localStorage.getItem(usuario)
                 let JSONcamionesCargados=JSON.parse(camionesCargados)
                 comprasEnLocal.push=JSONcamionesCargados
@@ -333,34 +330,33 @@ let montoCarro=0
                 
         })
         
-        /* FALTA RETOCAR ALGUNAS COSAS */
+        /* Funcion para elegir la forma de pago */
         $(document).ready(function(){  
             $("#enviar").hide()
             $(".cuotas").click(function() {
                 if($("#cuotas1").is(':checked')) {  
                     $("#totalCuotas").html(' ')
-                    let cantCuotas = $("#cuotas1").val();
                     $("#totalCuotas").append("El monto a abonar son $"+(totalCompra))                    
                     $("#enviar").show(1000)
                 } else if ($("#cuotas2").is(':checked')){ 
                     $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas2").val();
-                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra/3) + " Y Las cuotas son de $"+((totalCompra/cantCuotas)/100*15+(totalCompra/cantCuotas)))
                     $("#enviar").show(1000)
                 } else if ($("#cuotas3").is(':checked')){ 
                     $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas3").val(); 
-                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra/6) + " Y Las cuotas son de $"+((totalCompra/cantCuotas)/100*15+(totalCompra/cantCuotas)))
                     $("#enviar").show(1000)
                 } else if ($("#cuotas4").is(':checked')){ 
                     $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas4").val();
-                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra/9) + " Y Las cuotas son de $"+((totalCompra/cantCuotas)/100*15+(totalCompra/cantCuotas)))
                     $("#enviar").show(1000)
                 } else if ($("#cuotas5").is(':checked')){ 
                     $("#totalCuotas").html(' ');
                     let cantCuotas = $("#cuotas5").val();  
-                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra) + " Y Las cuotas son de $"+((precioCuotas/cantCuotas)/100*15+(precioCuotas/cantCuotas)))
+                    $("#totalCuotas").append("El monto a abonar son $"+(totalCompra/12) + " Y Las cuotas son de $"+((totalCompra/cantCuotas)/100*15+(totalCompra/cantCuotas)))
                     $("#enviar").show(1000)              
                 } 
             });  
@@ -368,7 +364,7 @@ let montoCarro=0
         });
     });
 
-    /* CATEGORIAS */
+    /* CATEGORIAS DE LOS PRODUCTOS */
     function cates (cat) {
         switch (cat){
             case "Zapatillas" :{
@@ -422,14 +418,12 @@ let montoCarro=0
             }
         }
     }
-
-
-    /* SIRVE PARA GRAFICAR EN EL CAMION */
     
+    /*  */
     let finalCamion=0;
     let compra;
-    function generarCompraEnLocal (){
-        /* GENERA UN NUMERO RANDOM PARA EL NUMEROD DE COMPRA */
+    function generarCompraDeLocal (){
+        /* comprasEnLocal = al array de las compras del usuario que ingreso */
         comprasEnLocal=JSON.parse(localStorage.getItem(usuario)) || [];
         
         $(".muestraCamion").remove()
@@ -438,12 +432,13 @@ let montoCarro=0
                 compra = localStorage.getItem(usuario)
             }
 
-            ultimaCompra= (JSON.parse(compra));
-            /* SE GRAFICA EL MENU DESPLEGABLE */            
+            ultimaCompra= (JSON.parse(compra));           
 
             /* ACA SE AGREGAN LOS PRODS AL MENU */
             let i=0
         for (const compra of comprasEnLocal){
+            /* GENERA UN NUMERO RANDOM PARA EL NUMERO DE COMPRA */
+
             let nRandom= Math.floor(Math.random()*1000000)
 
             $("#carro").append(`
@@ -454,7 +449,7 @@ let montoCarro=0
                     </a>
                     <ul id="tablaCamion${nRandom}" class="dropdown-menu compraDesplegable" aria-labelledby="offcanvasNavbarDropdown">
                     </ul>
-                    <button onclick="borrarCompra(${(usuario+i)})">x</button>
+                    <button class="btnEliminar" onclick="borrarCompra(${(usuario+i)})">x</button>
 
                     </li>
                 </ul>
@@ -491,12 +486,11 @@ let montoCarro=0
                 i=i+1
         }    
     };  
-    /* Defino z para poder agregar mas productos con id de pedido con numero */
-   /* CAMBIAR EL IF PARA QUE OBTENGA LA KEY DEL LOCAL STORAGE Y ASI COMPARARLA CON LA QUE INGRESA.. */
+    /* Borrar la compra del local y del Html */
     function borrarCompra(compraBorrada){
         let i=0
         let borrado
-        /* HACER SPLICE AL CARRITO PARA QUE SE ELIMINE ESE PRODUCTO */
+
         $("#carro").children().each(function(e){
             console.log(i)
             let camion=$("#carro").children()
@@ -517,7 +511,8 @@ let montoCarro=0
 
         comprasEnLocal.splice(borrado,1)
         localStorage.setItem(usuario,JSON.stringify(comprasEnLocal))
-        generarCompraEnLocal()
+        /* Aca las vuelve a generar cuando se elimina alguna */
+        generarCompraDeLocal()
             
     }
    
@@ -525,9 +520,13 @@ let montoCarro=0
 /* MOSTRAR COMPRAS EN SECCION CARRITO*/
 $("#camion").click(function(){
     if (uRegistrado==true){
-        generarCompraEnLocal()
+        generarCompraDeLocal()
         $(".muestraCamion").show(1000)
         $("#tabla").hide(1000)
+        $("#borrar").hide(1000)
+        $("#comprar").hide(1000)
+        $("#total").hide(1000)
+
         document.getElementById("divProds").classList.add("divBotonNo");
         document.getElementById("divProds").classList.remove("divBoton");
         document.getElementById("divCamion").classList.remove("divBotonNo");
@@ -547,13 +546,25 @@ $("#camion").click(function(){
 
 /* MOSTRAR PRODUCTOS EN SECCION CARRITO */
 $("#mostrarProductos").click(function(){
-    $(".muestraCamion").hide(1000)
-    $("#tabla").show(1000)
-    document.getElementById("divCamion").classList.add("divBotonNo");
-    document.getElementById("divCamion").classList.remove("divBoton");
-    document.getElementById("divProds").classList.remove("divBotonNo");
-    document.getElementById("divProds").classList.add("divBoton");
+    if (uRegistrado==true){
+        $(".muestraCamion").hide(1000)
+        $("#tabla").show(1000)
+        $("#borrar").show(1000)
+        $("#comprar").show(1000)
+        $("#total").show(1000)
+        document.getElementById("divCamion").classList.add("divBotonNo");
+        document.getElementById("divCamion").classList.remove("divBoton");
+        document.getElementById("divProds").classList.remove("divBotonNo");
+        document.getElementById("divProds").classList.add("divBoton");
+    }else if ((uRegistrado==false) || (uRegistrado=="repetido") || (uRegistrado=="registrado")) {
+        swal.fire({
     
+            icon: 'error',
+            title: 'Debe iniciar sesion para ver sus compras!',
+    
+        });
+        
+    }
 })
 
 
@@ -563,7 +574,6 @@ $("#mostrarProductos").click(function(){
 /* URL DE PERSONAJES DE HARRY POTTER */
 const URLGET = "http://hp-api.herokuapp.com/api/characters";
 const puestos=["","Front End","Jefa de diseño","Back End"];
-console.log(puestos);
 
 $("#creadores").prepend('<button class="categorias" id="btn1"> Mostrar creadores </button>');
 $("#btn1").click(() => { 
@@ -600,33 +610,35 @@ $("#btn1").click(() => {
 
 
 
-/* SECCION USUARIO */
-
+/* SECCION FORMULARIO DE USUARIO */
+/* Los const sirven para despues graficarlos en el menu */
 const inputs = ["nombreApellido","nombreUsuario","gmail","direccion","clave","claveVerificada"];
 const labels =  ["Nombre y apellido","Usuario", "Correo","direccion", "Contraseña", "Reescriba su contraseña"];
-const places = ["Nombre completo","Ingrese un nombre de usuario","Ingrese su correo","direccion","Contraseña","Reescriba su contraseña"];
+const places = ["Nombre...","Username...","Correo...","Direccion...","Contraseña...",("verificar Contra...")];
+const validaciones = ["*Puede llevar letras, espacios y acentos","*Puede llevar letras, numeros, guion y guion_bajo, sin espacios","*Debe ingresar una direccion valida","*4 a 30 Digitos","*Su contraseña debe tener 4 a 12 Digitos","*verificar Contraseña"];
+
 /* ACA VAN A IR LOS NUEVOS USUARIOS */
 let usuarioRegistrado = localStorage.getItem("usuario");
 let usuarioRegistradoJSON= JSON.parse(usuarioRegistrado);
 let usuarios=[];
+/* Si no hay usuarios muestra el console.log y si hay algun usuario lo toma */
 if (usuarioRegistrado === null){
     console.log("no hay usuarios")
 }else{
     usuarios=usuarioRegistradoJSON;
 }
 
-
-/* TOMA EL NOMBRE DE USUARIO */
+/* Se grafica el menu de usuario */
 let nombreUsuario;
 let usuario;
 $("#usuarioBoton").click(function(){
-  
+    /* Si el usuario no ingreso a su cuenta muestra esto */
     if (uRegistrado ===false){
         $("#ulDesplegable").html('');
         $("#usuario").append(`
-            <ul class=" navbar-nav justify-content-end flex-grow-1 pe-3 usuario" id="ulDesplegable" aria-labelledby="offcanvasNavbarDropdown" style="display: none;">
+            <ul class=" navbar-nav justify-content-end flex-grow-1 pe-3 usuario usuarioCelu" id="ulDesplegable" aria-labelledby="offcanvasNavbarDropdown" style="display: none;">
             <li class="nav-item dropdown desplegableUsuario">
-            <form id ="formularioUsuario" action="">
+            <form id ="formularioUsuario" class="formularioUsuario" action="">
                 <label class="labelUsuario">Correo Electronico
                     <input type="text" placeholder="correo..." class="inputUsuario" name ="gmail" id="gmail"></input>
                 </label>
@@ -642,11 +654,12 @@ $("#usuarioBoton").click(function(){
         iniciar()
         
     } else if(uRegistrado ==="repetido"){
+        /* Si el usuario ingreso,cerro su cuenta y otro usuario quiere entrar a su cuenta muestra esto */
 
         $("#ulDesplegable").html(``);
         $("#ulDesplegable").append(`
             <li class="desplegableUsuario">
-                <form id ="formularioUsuario" action="">
+                <form id ="formularioUsuario" class="formularioUsuario" action="">
                     <label class="labelUsuario">Correo Electronico
                         <input type="text" placeholder="correo..." class="inputUsuario" name ="gmail" id="gmail"></input>
                     </label>
@@ -661,16 +674,17 @@ $("#usuarioBoton").click(function(){
         iniciar()
         
     }else if(uRegistrado ===true){
+        /* Si el usuario ingreso a su cuenta muestra esto */
+
         $("#formularioUsuario").html(' ');
         $("#formularioUsuario").append(`
             <p>Hola ${nombreUsuario}!</p>
-            <a type="button" id="datos">Datos de la cuenta</a>
             <a type="button" id="cerrar">Cerrar sesion</a>
         `)
         
         
         
-
+        /* Boton para cerrar sesion */
         $("#cerrar").click(function(){
             uRegistrado="repetido"
             $("#ulDesplegable").hide(1000);
@@ -683,13 +697,15 @@ $("#usuarioBoton").click(function(){
 
     /* FUNCION DE REGISTRO */
         $("#registrarse").click(function(){
+            /* Si el usuario desea regisrarse muestra  */
             let i=0;
             $("#formularioUsuario").html(``);
             for(const inputsNames of inputs){ 
                     
                 $("#formularioUsuario").append(`
                 <label for="" id="labelUsuario" class="labelUsuario">
-                    ${labels[i]}           
+                    ${labels[i]} 
+                    <p class="validaciones">${validaciones[i]}</p>          
                     <input type="text"  placeholder=${places[i]} class="inputUsuario" name = ${inputsNames} id="${inputsNames}"></input>
 
                 </label>`)
@@ -754,16 +770,14 @@ function iniciar(){
                     /* Toma de nombre de usuario para el menu usuario */
                     nombreUsuario=user.nombreCompleto
                     usuario=user.nombreDeUsuario
+                    /* Si correo y contraseña son iguales a las tomadas del localStorage */
                     if ((valorCorreo === correoDeRegistro) && (valorContra === contraDeRegistro )){
-
-
-                        
                             compra = localStorage.getItem(usuario)
 
                             if(compra == null){
                                 console.log("NO HAY NADA")
                             }else{
-                                generarCompraEnLocal()
+                                generarCompraDeLocal()
                             }
                         
                         uRegistrado=true;
@@ -773,10 +787,6 @@ function iniciar(){
                         });
                         $("#ulDesplegable").hide(2000);
                         /* resetea el form */
-                        
-
-                        
-                        
                         form.reset();
                         break
                     }else{                               
@@ -806,7 +816,7 @@ function comprobar(){
                 
                 form.addEventListener("submit",(e)=>{
                     e.preventDefault();
-                
+                    /* if que define si esta bien registrado */
                     if ((inputsLlenados.nombreApellido === true ) && (inputsLlenados.nombreUsuario === true ) && (inputsLlenados.gmail === true) && (inputsLlenados.direccion === true ) && (inputsLlenados.clave === true ) && (inputsLlenados.claveVerificada === true )){
                         swal.fire({
                             icon: 'success',
@@ -815,10 +825,7 @@ function comprobar(){
                         /* Creacion de usuarios */
                         datosUsuario= new user (valorName,valorUser,valorCorreo,valorClave,valorClaveVerificada);
                         usuarios.push(datosUsuario);
-                        localStorage.setItem("usuario",JSON.stringify(usuarios));
-                        
-                        
-                        
+                        localStorage.setItem("usuario",JSON.stringify(usuarios));   
                         uRegistrado=true;
         
                         /* resetea el form */
@@ -865,8 +872,9 @@ const inputsLlenados=[
     clave = false,
     claveVerificada = false,
 ];
+/* Constructor de Usuario */
 class user {
-    constructor(nC,nDU,c,d,c1,c2) {
+    constructor(nC,nDU,c,d,c1) {
         this.nombreCompleto = nC;
         this.nombreDeUsuario = nDU;
         this.correo = c;
@@ -885,64 +893,48 @@ let valorClave;
 let valorClaveVerificada;
 
 
-const validarForm = (e) => {
-    
+const validarForm = (e) => {   
     switch (e.target.name) {
         case "nombreApellido":{
-
             validar(expresiones.nombre,e,"nombreApellido",nombreApellido);
             valorName =e.target.value;
             break;
         }
-        case "nombreUsuario":{
-            
+        case "nombreUsuario":{     
             validar(expresiones.usuario,e,"nombreUsuario");
             valorUser =e.target.value;
             break;
         }
         case "gmail":{
-
             validar(expresiones.gmail,e,"gmail");
             valorCorreo =e.target.value;
-
-
             break;
         };
         case "direccion":{
             validar(expresiones.direccion,e,"direccion");
             valorDireccion =e.target.value;
-
             break;
         };
         case "clave":{
             validar(expresiones.contra,e,"clave");
-
             break;
         };
-        case "claveVerificada":{
-            
+        case "claveVerificada":{            
             const clave1 = document.getElementById("clave");
             const clave2 = document.getElementById("claveVerificada");
-
             if (clave2.value !== clave1.value ) {
-
                 /* Validacion Incorrecta */
                 document.getElementById("claveVerificada").classList.remove("formVacio");
                 document.getElementById("claveVerificada").classList.remove("formCorrecto");
                 document.getElementById("claveVerificada").classList.add("formMal");
                 inputsLlenados.claveVerificada = false;
-                    
- 
             }else if (clave2.value == " ") {
                 /* Validacio Vacia */
                 document.getElementById("claveVerificada").classList.remove("formCorrecto");
                 document.getElementById("claveVerificada").classList.remove("formMal");
                 document.getElementById("claveVerificada").classList.add("formVacio");
                 inputsLlenados.claveVerificada = false;
-                
-
             }else if (clave2.value === clave1.value ){
-
                 /* Validacion correcta */
                 document.getElementById("claveVerificada").classList.remove("formMal");
                 document.getElementById("claveVerificada").classList.remove("formVacio");
@@ -950,45 +942,32 @@ const validarForm = (e) => {
                 inputsLlenados.claveVerificada = true;
                 valorClave = clave1.value;
                 valorClaveVerificada = clave2.value;
-
-   
             };
-            
-
-            break
+             break
         };
     };
 };
-
-
-
-
 /* FUNCION DE VALIDACION */
 
 function validar (expresion,evento,campos){
     if (expresion.test(evento.target.value)){
         /* Validacion correcta */
-
         document.getElementById(campos).classList.remove("formMal");
         document.getElementById(campos).classList.remove("formVacio");
         document.getElementById(campos).classList.add("formCorrecto");
         inputsLlenados[campos] = true;
-       
-
     }else if (evento.target.value == "") {
         /* Validacio Vacia */
         document.getElementById(campos).classList.remove("formCorrecto");
         document.getElementById(campos).classList.remove("formMal");
         document.getElementById(campos).classList.add("formVacio");
         inputsLlenados[campos]=false;
-
     } else {
         /* Validacion Incorrecta */
         document.getElementById(campos).classList.remove("formVacio");
         document.getElementById(campos).classList.remove("formCorrecto");
         document.getElementById(campos).classList.add("formMal");
         inputsLlenados[campos]=false;
-
     };
 };
 

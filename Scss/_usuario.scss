@@ -1,16 +1,25 @@
 
 /* MENU DESPLEGABLE DE USUARIO */
-
-  
+.formularioUsuario{
+    margin: 2%;
+    border-radius: 15%;
+}
+.validaciones{
+    font-weight: normal;
+    font-size: 18px;
+    margin: 0%;
+    text-align: left;
+}
 .usuario{
     position: absolute;
     overflow: visible;
     z-index: 10000000;
     background-color: $amarillo;
     width: 25%;
-    border: white 2px solid;
+    border: $nav 3px solid;
+    border-radius: 15px;
     top: 80%;
-    left:65%;
+    left:50%;
 }
 .desplegableUsuario{
     text-decoration: none;
